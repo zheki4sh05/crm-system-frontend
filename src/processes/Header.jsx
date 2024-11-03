@@ -9,8 +9,8 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     ...theme.mixins.toolbar,
   }));
 
-function Header() {
-    return ( <> <DrawerHeader/></> );
+function Header({children}) {
+    return ( <><DrawerHeader>{children}</DrawerHeader></> );
 }
 
 export default Header;

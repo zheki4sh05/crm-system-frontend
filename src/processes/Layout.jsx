@@ -1,7 +1,14 @@
-import { ThemeProvider } from "@emotion/react";
+
 import { Box } from "@mui/material";
 import Navbar from "./Navbar";
-
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ruRU } from "@mui/material/locale";
+import AuthFormComponent from "../widgets/AuthFormComponent";
+import LoadingUserData from "../widgets/LoadingUserData";
+import Header from './Header';
+import MainBody from "./MainBody";
+import { Outlet } from "react-router-dom";
+const theme = createTheme(ruRU);
 function Layout() {
     const authStatus = true
   
@@ -13,19 +20,21 @@ function Layout() {
   
     return (
       <ThemeProvider theme={theme}>
-        <Box>
+        <Box sx={{height:"100vh", width:"100vw"}}>
           {
             //(authStatus===statusTypes.succeeded && userDataStatus===statusTypes.succeeded && companyDataStatus===statusTypes.succeeded) ?
             // !(checkAll([authStatus,userDataStatus,companyDataStatus])===statusTypes.succeeded) ?
-           (authStatus === statusTypes.succeeded) ? 
+           (authStatus !== true) ? 
               <AuthFormComponent />
-             : (appStatus === statusTypes.succeeded) ? 
+             : (appStatus !== true) ? 
               <LoadingUserData  />
              : 
               <Box
                 sx={{
                   display: "flex",
                   flexDirection: "row",
+                  boxSizing:"border-box",
+                  height:"100%",
                 }}
               >
                 <Navbar />
@@ -33,6 +42,12 @@ function Layout() {
                   sx={{
                     display: "flex",
                     flexDirection: "column",
+                    flex:1,
+                    height:"100%",
+                   
+                    boxSizing:"border-box",
+                   
+                   
                   }}
                 >
                   <Header/>
@@ -41,8 +56,8 @@ function Layout() {
                     <Outlet />
                   </MainBody>
   
-                  <WidgetsToolBar />
-                  <AsideBox />
+                 
+            
                 </Box>
               </Box>
             

@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import Layout from './widgets/Layout';
 import Page404 from './pages/Page404';
 import Main from './pages/Main';
-import PathConstants from './util/pathConstants';
-import Deals from './pages/Deals';
 
+import Deals from './pages/Deals';
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Layout from './processes/Layout';
+import PathConstants from './shared/pathConstants';
 function App() {
   const router = createBrowserRouter([
     {
