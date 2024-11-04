@@ -3,7 +3,7 @@ import Button from "../shared/MainBtn";
 import MainBtn from "../shared/MainBtn";
 import SearchBox from "../shared/SearchBox";
 
-function SearchSection() {
+function SearchSection({children}) {
     return ( 
     
     <Box sx={{
@@ -17,7 +17,9 @@ function SearchSection() {
       
       }} >
 
-      <MainBtn text={"Создать"}/>
+        {children}
+
+    
 
       <SearchBox primaryText={"Найти сделки..."} />
 

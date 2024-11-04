@@ -5,8 +5,8 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function MainDropdown({title, list, changeHandler, size="small"}) {
-  const [value, setValue] = React.useState(list[0].value);
+export default function MainDropdown({title, list, changeHandler, size="small",displayEmpty, defaultValue=0}) {
+  const [value, setValue] = React.useState(list[defaultValue].value);
 
 
 
@@ -17,7 +17,7 @@ export default function MainDropdown({title, list, changeHandler, size="small"})
 
   return (
  <>
-        <InputLabel id="demo-simple-select-label">{title}</InputLabel>
+        <InputLabel id="demo-simple-select-label"  >{title}</InputLabel>
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
@@ -25,6 +25,8 @@ export default function MainDropdown({title, list, changeHandler, size="small"})
           label={title}
           onChange={handleChange}
           size={size}
+          defaultValue=""
+          displayEmpty={displayEmpty}
         >
             {
                 list.map((item,index)=>(

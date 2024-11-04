@@ -1,8 +1,10 @@
 const PathConstants = {
     HOME: "/",
-
     DEALS: "deals",
-
+    TASKS:"/tasks",
+    DOCS:"/documents",
+    CUSTOMER:"/customer",
+    WORKERS:"/workers"
 
 }
 

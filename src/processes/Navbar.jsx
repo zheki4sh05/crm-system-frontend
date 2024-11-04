@@ -15,8 +15,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import React from 'react';
 import Header from './Header';
 import HomeIcon from '@mui/icons-material/Home';
@@ -24,9 +22,11 @@ import WorkIcon from '@mui/icons-material/Work';
 import PathConstants from '../shared/pathConstants';
 import { Link } from 'react-router-dom';
 import UserProfile from '../pages/UserProfile';
-
-
-
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import QueryStatsIcon from '@mui/icons-material/QueryStats';
+import TopicIcon from '@mui/icons-material/Topic';
+import GroupsIcon from '@mui/icons-material/Groups';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -110,6 +110,26 @@ const menu_items = [
     name:"Сделки",
     icon: <WorkIcon />
   },
+  {
+    path:PathConstants.TASKS,
+    name:"Мои задачи",
+    icon: <FormatListBulletedIcon />
+  },
+  {
+    path:PathConstants.DOCS,
+    name:"Документы",
+    icon: <TopicIcon />
+  },
+  {
+    path:PathConstants.CUSTOMER,
+    name:"Клиенты",
+    icon: <GroupsIcon />
+  },
+  {
+    path:PathConstants.WORKERS,
+    name:"Сотрудники",
+    icon: <Diversity3Icon />
+  },
 
 ]
 
@@ -129,11 +149,12 @@ export default function Navbar() {
     return (
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="fixed" open={open}>
+        <AppBar position="fixed" open={open} >
           
 
         
-          <Toolbar>
+          <Toolbar sx={{justifyContent:"space-between"}}>
+            <Box sx={{display:"flex", flexDirection:"row", alignItems:"center"}} >
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -152,7 +173,12 @@ export default function Navbar() {
               WiseCRM
             </Typography>
 
-            <UserProfile/>
+            </Box>
+            
+              
+          <UserProfile/>
+          
+           
 
           </Toolbar>
         </AppBar>

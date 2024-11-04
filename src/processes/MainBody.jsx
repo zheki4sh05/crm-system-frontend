@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 function MainBody({ children }) {
   return (
     <Box sx={{ 
-   
+
     height:"100%",
     bgcolor: "#ABD7FF", 
     m: 2, 

@@ -6,6 +6,11 @@ import Deals from './pages/Deals';
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from './processes/Layout';
 import PathConstants from './shared/pathConstants';
+import Tasks from './pages/Tasks';
+import Docs from './pages/Docs';
+import Customers from './pages/Customers';
+import Workers from './pages/Workers';
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -18,10 +23,25 @@ function App() {
           path: PathConstants.HOME,
           element: <Main />,
         },
-
         {
           path: PathConstants.DEALS,
           element: <Deals />,
+        },
+        {
+          path: PathConstants.TASKS,
+          element: <Tasks />,
+        },
+        {
+          path: PathConstants.DOCS,
+          element: <Docs />,
+        },
+        {
+          path: PathConstants.CUSTOMER,
+          element: <Customers/>,
+        },
+        {
+          path: PathConstants.WORKERS,
+          element: <Workers/>,
         },
       
       ],

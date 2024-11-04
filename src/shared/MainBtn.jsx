@@ -1,6 +1,7 @@
 import { Button, IconButton } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import SettingsIcon from '@mui/icons-material/Settings';
+import InfoIcon from '@mui/icons-material/Info';
 function MainBtn({
   type = "btn",
   variant = "contained",
@@ -45,6 +46,18 @@ function MainBtn({
         size={config.size}
         color={config.color}
         startIcon={<SettingsIcon />}
+      >
+        {text}
+      </Button>
+      ); 
+    }else if(type=="info"){
+      return (
+        <Button
+        onClick={handler}
+        variant={variant}
+        size={config.size}
+        color={config.color}
+        startIcon={<InfoIcon />}
       >
         {text}
       </Button>
