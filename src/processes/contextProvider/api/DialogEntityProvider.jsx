@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DialogContext from "../DialogContext";
 
 
@@ -15,9 +15,13 @@ function DialogEntityProvider({children}) {
     setOpen(false);
   };
   const setDataHandler=(value)=>{
-    setData(value)
-    console.log(data)
+    setData({...data, ...value})
+  
   }
+
+  useEffect(()=>{
+console.log(data)
+  },[data])
 
   const getDialogResult=()=>{
       return Object.keys(data).length

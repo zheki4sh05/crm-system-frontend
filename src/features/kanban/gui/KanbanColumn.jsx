@@ -5,7 +5,7 @@ import DealColumnInfo from "./DealColumnInfo";
 import kanban from "./../api/types";
 import MainDropdown from "../../../shared/MainDropdown";
 
-function KanbanColumn({ items, title, type }) {
+function KanbanColumn({ items=[{id:1,name:"Сделка 1", clientName:"ФИО", started:"12.05.2024", tasks:[{},{}]}], title, type, openHandler }) {
 
 
     const getInfoByType=(type, items)=>{
@@ -48,12 +48,21 @@ function KanbanColumn({ items, title, type }) {
 
 
 
-      
    
 
       <Divider sx={{ margin: "5px 0 5px 0" }} />
 
-      <Deal type={"kanban"} />
+         
+      <Box>
+
+        {items.map((item,index)=>(
+          <Deal key={index}  type={"kanban"} data={item} handler={openHandler}/>
+        ))}
+
+      
+      </Box>
+
+    
     </Box>
   );
 }

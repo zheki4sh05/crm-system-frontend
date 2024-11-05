@@ -8,6 +8,7 @@ function MainBtn({
   btnClickHandler,
   text,
   config = { size: "medium", color: "primary" },
+  disable=false
 }) {
   const handler = () => {
     btnClickHandler();
@@ -20,6 +21,7 @@ function MainBtn({
         variant={variant}
         size={config.size}
         color={config.color}
+        disabled={disable}
       >
         {text}
       </Button>
