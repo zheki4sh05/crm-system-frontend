@@ -127,9 +127,7 @@ const toggleDrawer = (anchor, open) =>(event)=> {
         <>
 <Box sx={{ minWidth: 230 }}>
             <Card variant="outlined">{getKanbanCard(data, toggleDrawer,  moveHandler)}</Card>
-        </Box>
-
-        
+        </Box>        
         <Drawer
      anchor={"right"}
      open={state["right"]}
