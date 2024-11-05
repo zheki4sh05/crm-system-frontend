@@ -125,7 +125,6 @@ const toggleDrawer = (anchor, open) =>(event)=> {
     if(type=="kanban"){
         return   (
         <>
-
 <Box sx={{ minWidth: 230 }}>
             <Card variant="outlined">{getKanbanCard(data, toggleDrawer,  moveHandler)}</Card>
         </Box>
