@@ -27,7 +27,8 @@ function Layout() {
            (authStatus !== true) ? 
               <AuthFormComponent />
              : (appStatus !== true) ? 
-              <LoadingUserData  />
+              // <LoadingUserData  />
+              <></>
              : 
               <Box
                 sx={{

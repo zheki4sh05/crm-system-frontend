@@ -4,8 +4,6 @@ import KanbanColumn from "./KanbanColumn";
 
 
 function Kanban({titles, type}) {
-
-   
     
 
     return ( 

@@ -1,0 +1,118 @@
+import api from "../constants/apipath";
+import DomainNames from "../constants/DomainNames";
+import ApiRequestCreator from "../util/requestFactory";
+import { createSlice } from "@reduxjs/toolkit";
+
+//----state---
+const initialState = {
+    stages:[],
+    status:'idle',
+    error:null
+}
+//--------------
+
+
+//----async reducers-----
+
+    // ----init api factory----
+    const apiFactory = new ApiRequestCreator(DomainNames.stages, api.stages.url);
+    //--------------------
+
+    //--- create----
+    export  const createStage = apiFactory.createPostRequest(api.stages.create)
+    //----------------------
+
+    //---update---
+    export const updateStage = apiFactory.createPatchRequest(api.stages.update)
+    //----------------------
+
+    //---fetch---
+    export const fetchStages = apiFactory.createGetRequest(api.stages.fetchAll, true)
+    //----------------------
+
+
+
+
+const stageSlice = createSlice({
+    name: DomainNames.stages,
+    initialState,
+    reducers: {      
+    },
+    extraReducers(builder) {
+      builder
+      //---создание стадии-------------
+        .addCase(createStage.pending, (state, action) => {
+
+          state.status = 'loading'
+        })
+        .addCase(createStage.fulfilled, (state, action) => {
+          state.status = 'succeeded';
+
+          state.stages.push({...action.payload}) 
+
+         
+        })
+        .addCase(createStage.rejected, (state, action) => {
+          state.status = 'failed';
+          state.error = action.error.message
+        })
+        //----------------------------------------
+
+        //---получение стадий-------------
+        .addCase(fetchStages.pending, (state, action) => {
+
+        state.status = 'loading'
+        })
+        .addCase(fetchStages.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+
+        state.stages = [...action.payload] 
+
+        
+        })
+        .addCase(fetchStages.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message
+        })
+        //----------------------------------------
+        
+        //---обновление стадии-------------
+        .addCase(updateStage.pending, (state, action) => {
+
+        state.status = 'loading'
+        })
+        .addCase(updateStage.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+
+        let stages =  state.stages.filter(item=>{item.id!==action.payload.id})
+
+        state.stages=[...stages]
+
+        state.stages.push(action.payload)
+
+        
+        })
+        .addCase(updateStage.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message
+        })
+        //----------------------------------------
+        }
+      })
+
+  export function getStages(state){
+    return state[DomainNames.stages].stages;
+}
+
+export function getStagesStatus(state){
+    return state[DomainNames.stages].status
+  }
+
+  export function getStagesError(state){
+    return state[DomainNames.stages].error
+  }
+
+
+  export default stageSlice.reducer
+
+

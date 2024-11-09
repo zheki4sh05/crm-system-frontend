@@ -1,10 +1,18 @@
-import { Box, Button, CircularProgress, Divider, Grid2, Typography } from "@mui/material";
+import { Box, Button, Divider, Grid2, Typography } from "@mui/material";
 
-import CreateCompany from "./CreateCompany";
-import CustomCreateAlert from './../CustomCreateAlert';
+import CreateCompany from "./CreateCompany.jsx";
 
-import CompanyInformation from "./CompanyInformation";
+
+import MainBtn from "../../shared/MainBtn";
+import { useState } from "react";
+import CompanyInformation from "./CompanyInformation.jsx";
 function AboutCompany() {
+
+  const [open,setOpen] = useState(false);
+
+  const handleOpenTabsAboutCompany=()=>{
+    setOpen((prevState) => (prevState === false ? true : false));
+  }
  
   return (
     <Box>
@@ -22,10 +30,10 @@ function AboutCompany() {
                 <Typography variant="h4" gutterBottom>
                   {userInCompany.name}
                 </Typography>{" "}
-                <Button size="small" sx={{ mr: 1 }} variant="outlined" onClick={handleOpenTabsAboutCompany}>
+                <MainBtn size="small" sx={{ mr: 1 }} variant="outlined" btnClickHandler={handleOpenTabsAboutCompany} text= {open ? "Скрыть" : "Подробнее"} />
 
-                  {open ? "Скрыть" : "Подробнее"}
-                </Button>
+                 
+               
               </>
             )}
           </Box>
@@ -39,8 +47,8 @@ function AboutCompany() {
                 </Typography>
                 <Typography variant="subtitle1" gutterBottom>
                   {userInCompany.currentRole == "admin"
-                    ? "Основатель компании"
-                    : "Работник компании"}
+                    ? "Администратор"
+                    : "Менеджер"}
                 </Typography>
               </Box>
               <Divider textAlign="right"></Divider>
@@ -90,14 +98,7 @@ function AboutCompany() {
         <Grid2 item xs={5}>
           {
             open ? 
-            // <CustomTabPanel  content={{
-            //   tabNames: ["О компании", "Сотрудники", ],
-            // }}>
-              
-            //     <Typography>
-            //       Hello
-            //     </Typography>
-            //   </CustomTabPanel>
+    
             <CompanyInformation/>
               :
               null

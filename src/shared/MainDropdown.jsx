@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 export default function MainDropdown({title, list, changeHandler, size="small",displayEmpty, defaultValue=0}) {
-  const [value, setValue] = React.useState(list[defaultValue].value);
+  const [value, setValue] = React.useState(list[defaultValue].id);
 
 
 
@@ -30,7 +30,7 @@ export default function MainDropdown({title, list, changeHandler, size="small",d
         >
             {
                 list.map((item,index)=>(
-                    <MenuItem key={index} value={item.value}>{item.name}</MenuItem>
+                    <MenuItem key={index} value={item.id}>{item.name}</MenuItem>
                 ))
             }
          

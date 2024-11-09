@@ -8,19 +8,57 @@ import kanban from "./../features/kanban/api/types";
 import DialogEntityProvider from "../processes/contextProvider/api/DialogEntityProvider";
 import CreateDial from "../widgets/CreatDeal/CreateDeal";
 import CustomStepper from './../features/CustomStepper';
+import { useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchDeal, getDealsStatus } from "../app/slices/dealSlice";
+import statusTypes from "../app/constants/statusTypes";
+import { fetchGroups, getGroups, getGroupsStatus } from "../app/slices/groupsSlice";
+import { fetchStages, getStagesStatus } from "../app/slices/stagesSlice";
+import { getCompany } from "../app/slices/companySlice,js";
+import ModalWindow from "../features/modal/ModalWindow";
+import GroupsControlBody from "../widgets/modal/GroupsControlBody";
 
 function Deals() {
+
+  const dispatch = useDispatch();
+
+  let company = useSelector(getCompany)
+
+
+
+  let groupsStatus = useSelector(getGroupsStatus)
+  let stagesStatus = useSelector(getStagesStatus)
+  let dealsStatus = useSelector(getDealsStatus)
+
+  const groups = useSelector(getGroups)
 
 
   function makeRequest(){
     
    }
 
-  const groups = [
-    { value: "all", name: "Все" },
-    { value: "B2B", name: "B2B" },
-    { value: "B2C", name: "B2C" },
-  ];
+  // const groups = [
+  //   { value: "all", name: "Все" },
+  //   { value: "B2B", name: "B2B" },
+  //   { value: "B2C", name: "B2C" },
+  // ];
+//do not delete
+  // useEffect(()=>{
+
+  //   if(groupsStatus===statusTypes.idle){
+
+  //     dispatch(fetchGroups({companyId:company.id}))
+
+  //   }
+  //   if(stagesStatus===statusTypes.idle){
+  //     dispatch(fetchStages({companyId:company.id}))
+  //   }
+
+  //   dispatch(fetchDeal())
+
+
+
+  // }, [])
 
   return (
     <DialogEntityProvider>
@@ -76,8 +114,21 @@ function Deals() {
             </Box>
 
             <Box sx={{ display: "flex", gap: "20px" }}>
-              <MainBtn type={"settings"} text="Группы" />
-              <MainBtn type={"settings"} text="Стадии" />
+              
+              <ModalWindow title="Управление группами"  btnText={"Группы"} handleSaveAction={()=>{}}>
+
+                <GroupsControlBody list={groups}/>
+
+              </ModalWindow>
+
+                 
+              <ModalWindow title="Управление стадиями" btnText={"Стадии"} handleSaveAction={()=>{}}>
+
+
+
+              </ModalWindow>
+
+
             </Box>
 
                       </Box>
