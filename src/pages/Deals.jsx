@@ -8,21 +8,52 @@ import kanban from "./../features/kanban/api/types";
 import DialogEntityProvider from "../processes/contextProvider/api/DialogEntityProvider";
 import CreateDial from "../widgets/CreatDeal/CreateDeal";
 import CustomStepper from './../features/CustomStepper';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDeal, getDealsStatus } from "../app/slices/dealSlice";
 import statusTypes from "../app/constants/statusTypes";
 import { fetchGroups, getGroups, getGroupsStatus } from "../app/slices/groupsSlice";
-import { fetchStages, getStagesStatus } from "../app/slices/stagesSlice";
-import { getCompany } from "../app/slices/companySlice,js";
+import { fetchStages, getStages, getStagesStatus } from "../app/slices/stagesSlice";
+
 import ModalWindow from "../features/modal/ModalWindow";
 import GroupsControlBody from "../widgets/modal/GroupsControlBody";
+import { getCompany } from "../app/slices/companySlice";
+
+import StagesControlBody from "../widgets/modal/StagesControlBody";
 
 function Deals() {
+
+  const groups = useSelector(getGroups)
+  const stages = useSelector(getStages)
+
+  const [activeGroup, setActiveGroup] = useState({})
+
+  const [activeStages,setStages] = useState([]);
+
+  useEffect(()=>{
+
+    if(groups.length>0){
+      setActiveGroup(groups[0])
+      setStages(getStagesByGroup(groups[0].id))
+    }
+   
+  },[])
+
+  useEffect(()=>{
+    setStages(getStagesByGroup(activeGroup.id))
+
+  },[activeGroup])
+
+ 
 
   const dispatch = useDispatch();
 
   let company = useSelector(getCompany)
+
+  const handleChangeGroup=(id)=>{
+    
+    setActiveGroup(groups.filter(item=>item.id===id)[0])
+  }
 
 
 
@@ -30,7 +61,8 @@ function Deals() {
   let stagesStatus = useSelector(getStagesStatus)
   let dealsStatus = useSelector(getDealsStatus)
 
-  const groups = useSelector(getGroups)
+  
+  
 
 
   function makeRequest(){
@@ -59,6 +91,13 @@ function Deals() {
 
 
   // }, [])
+
+const getStagesByGroup=(groupId)=>{
+    return stages.filter(item=>{
+
+      return item.groupId==groupId
+    })
+}
 
   return (
     <DialogEntityProvider>
@@ -98,7 +137,7 @@ function Deals() {
             <MainDropdown
               title={"Группа"}
               list={groups}
-              changeHandler={() => {}}
+              changeHandler={handleChangeGroup}
             />
           </Box>
 
@@ -124,7 +163,7 @@ function Deals() {
                  
               <ModalWindow title="Управление стадиями" btnText={"Стадии"} handleSaveAction={()=>{}}>
 
-
+              <StagesControlBody stages = {activeStages} />
 
               </ModalWindow>
 

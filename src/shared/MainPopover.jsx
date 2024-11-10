@@ -37,6 +37,7 @@ export default function BasicPopover({ text,edit=false, saveClickHandler }) {
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
+
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "left",
@@ -45,7 +46,7 @@ export default function BasicPopover({ text,edit=false, saveClickHandler }) {
 
         {edit ? 
         
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
+        <Box sx={{ display: "flex", flexDirection: "row",p:1 }}>
           
         <TextField
           sx={{ p: 2 }}

@@ -5,7 +5,7 @@ import statusTypes from "../app/constants/statusTypes";
 import { checkAll } from "../app/util/checkStatuses";
 import { getUserStatus } from "../app/slices/appUserSlice";
 import { fetchStats, getStatsStatus } from "../app/slices/statsSlice";
-import { getCompanyStatus } from "../app/slices/companySlice,js";
+import { getCompanyStatus } from "../app/slices/companySlice";
 function LoadingUserData() {
 
   const {userStatus} = useSelector(getUserStatus);

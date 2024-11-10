@@ -43,6 +43,7 @@ function MainBtn({
           size={config.size}
           color={config.color}
           startIcon={<SettingsIcon />}
+          disabled={disable}
         >
           {text}
         </Button>

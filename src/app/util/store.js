@@ -1,6 +1,6 @@
 import DomainNames from "../constants/DomainNames";
 import userSlice from './../slices/appUserSlice'
-import companySlice from './../slices/appUserSlice';
+import companySlice from './../slices/companySlice';
 import dealSlice from './../slices/dealSlice';
 import stageSlice from './../slices/stagesSlice';
 import statsSlice from './../slices/statsSlice';

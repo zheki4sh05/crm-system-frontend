@@ -27,7 +27,7 @@ export default function ModalWindow(props) {
   };
   const handleClose = () => {
     
-    props.handleSaveAction()
+   
 
     setOpen(false);
   };
@@ -61,12 +61,12 @@ export default function ModalWindow(props) {
         <DialogContent dividers>
           {props.children}
         </DialogContent>
-        <DialogActions>
+        {/* <DialogActions>
 
         <MainBtn type={"settings"} text={"Сохранить"} btnClickHandler={handleClose}/>
 
 
-        </DialogActions>
+        </DialogActions> */}
       </BootstrapDialog>
     </React.Fragment>
   );
