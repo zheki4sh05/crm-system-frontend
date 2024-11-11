@@ -1,6 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
 import { getPageNameByPath } from "../shared/pathConstants";
+import { useSelector } from "react-redux";
+import { getDeals } from "../app/slices/dealSlice";
 
 function PageInfo() {
 
@@ -13,6 +15,14 @@ function PageInfo() {
     const location = useLocation();
 
     const getItemInfo=(name)=>{
+
+        switch(name){
+
+            case 1:{
+                return useSelector(getDeals).length
+            }
+        }
+
         return "0"
     }
 

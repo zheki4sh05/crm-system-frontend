@@ -3,7 +3,15 @@ import KanbanColumn from "./KanbanColumn";
 
 
 
-function Kanban({titles, type}) {
+function Kanban({type,deals, stages}) {
+
+    const getDealsByStage=(stageId)=>{
+
+        return deals.filter((item,index)=>{
+            return item.stageId===stageId
+        })
+
+    }
     
 
     return ( 
@@ -11,9 +19,19 @@ function Kanban({titles, type}) {
 
     <Box sx={{display:"flex", flexDirection:"row", height:"100%", overflowX:"scroll", maxWidth:"100%",  borderLeft: "dashed 2px #A9A9A9",}} >
 
-        <KanbanColumn title={"Название стадии"} type={type}/>
-        <KanbanColumn title={"Название сделки"} type={type} />
-        <KanbanColumn title={"Название сделки"} type={type} />
+
+        {
+        stages.map((item,index)=>(
+
+            <KanbanColumn key = {index} title={item.name} type={type} deals={getDealsByStage(item.id)} />
+
+        ))
+
+
+        }
+
+      
+    
        
     </Box>
      

@@ -15,7 +15,7 @@ const initialState = {
       order: 1,
     },
     {
-      id: 1,
+      id: 2,
       name: "Стадия 2",
       description: "Описание стадии 2",
       companyId: 1,

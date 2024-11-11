@@ -8,7 +8,7 @@ import LoadingUserData from "../widgets/LoadingUserData";
 import Header from './Header';
 import MainBody from "./MainBody";
 import { Outlet } from "react-router-dom";
-const theme = createTheme(ruRU);
+const theme = createTheme();
 function Layout() {
     const authStatus = true
   

@@ -4,16 +4,28 @@ import StageControlBody from "./StageControlBody";
 
 function StagesControlBody({ stages }) {
   const handleSave = (item) => {
-    console.log(modify);
+    console.log(item);
   };
 
+  const handleEdit=(item)=>{
 
+  }
+
+const sortByOrder=(list)=>{
+  return list.sort((a, b) => a.order - b.order);
+}
   const getTodos = (list) => {
    
 
     return (
-      <List sx={{width:"100%"}}>
-        {list.map((todo, index) => (
+
+      <>
+
+      {
+
+        list.length>0 ? 
+        <List sx={{width:"100%"}}>
+        {sortByOrder(list).map((todo, index) => (
           <ListItem key={index} divider={true} sx={{width:"100%"}}>
             <Box sx={{display:"flex", flexDirection:"row", width:"100%"}}>
 
@@ -30,7 +42,7 @@ function StagesControlBody({ stages }) {
                 btnText={"Открыть"}
               
               >
-                <GroupControlBody item={todo} handleSave={handleEdit}/>
+                <StageControlBody item={todo} handleSave={handleEdit}/>
               </ModalWindow>
            
             </Box>
@@ -38,6 +50,16 @@ function StagesControlBody({ stages }) {
           </ListItem>
         ))}
       </List>
+
+      :
+      <Typography>Список пуст</Typography>
+
+
+      }
+      
+      </>
+
+     
     );
   };
 
@@ -45,7 +67,7 @@ function StagesControlBody({ stages }) {
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Box>
       {getTodos(stages)}
-        <ModalWindow title={"Создание группы"} btnText={"Создать"}>
+        <ModalWindow title={"Создание стадии"} btnText={"Создать"}>
           <StageControlBody handleSave={handleSave} />
         </ModalWindow>
       </Box>

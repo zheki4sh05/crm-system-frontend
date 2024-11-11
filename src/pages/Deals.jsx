@@ -8,9 +8,9 @@ import kanban from "./../features/kanban/api/types";
 import DialogEntityProvider from "../processes/contextProvider/api/DialogEntityProvider";
 import CreateDial from "../widgets/CreatDeal/CreateDeal";
 import CustomStepper from './../features/CustomStepper';
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchDeal, getDealsStatus } from "../app/slices/dealSlice";
+import { fetchDeal, getDeals, getDealsStatus } from "../app/slices/dealSlice";
 import statusTypes from "../app/constants/statusTypes";
 import { fetchGroups, getGroups, getGroupsStatus } from "../app/slices/groupsSlice";
 import { fetchStages, getStages, getStagesStatus } from "../app/slices/stagesSlice";
@@ -21,28 +21,46 @@ import { getCompany } from "../app/slices/companySlice";
 
 import StagesControlBody from "../widgets/modal/StagesControlBody";
 
-function Deals() {
-
+const Deals = memo(function Deals() {
+ 
   const groups = useSelector(getGroups)
   const stages = useSelector(getStages)
-
-  const [activeGroup, setActiveGroup] = useState({})
-
-  const [activeStages,setStages] = useState([]);
+  const deals = useSelector(getDeals)
 
   useEffect(()=>{
 
-    if(groups.length>0){
-      setActiveGroup(groups[0])
-      setStages(getStagesByGroup(groups[0].id))
-    }
+  
+    console.log("Загрузка")
+    
    
   },[])
 
-  useEffect(()=>{
-    setStages(getStagesByGroup(activeGroup.id))
+  const initGroup=(items)=>{
+    if(items.length>0){
+      return items[0]
+    }else{
+      return {id:0}
+    }
+  }
 
-  },[activeGroup])
+  const getStagesByGroup=(groupId)=>{
+    return stages.filter(item=>{
+
+      return item.groupId==groupId
+    })
+}
+
+  const [activeGroup, setActiveGroup] = useState(initGroup(groups))
+
+  const [activeStages,setStages] = useState(getStagesByGroup(activeGroup.id));
+
+
+
+  // useEffect(()=>{
+  //  // setStages(getStagesByGroup(activeGroup.id))
+  //   console.log("стадии")
+
+  // },[activeGroup])
 
  
 
@@ -92,12 +110,7 @@ function Deals() {
 
   // }, [])
 
-const getStagesByGroup=(groupId)=>{
-    return stages.filter(item=>{
 
-      return item.groupId==groupId
-    })
-}
 
   return (
     <DialogEntityProvider>
@@ -190,12 +203,12 @@ const getStagesByGroup=(groupId)=>{
       </Box>
 
       <Box sx={{ width: "100%", marginTop: "10px", height: "auto" }}>
-        <Kanban type={kanban.deal} />
+        <Kanban type={kanban.deal} stages={activeStages} deals={deals}/>
       </Box>
     </Box>
     <CreateDial reloadHandler={makeRequest} />
     </DialogEntityProvider>
   );
-}
+})
 
 export default Deals;

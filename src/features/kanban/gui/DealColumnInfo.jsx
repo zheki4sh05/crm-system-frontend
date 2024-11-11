@@ -1,9 +1,22 @@
 import { Box, Typography } from "@mui/material";
+import { getDealPrice } from './../../../app/util/deal';
 
 function DealColumnInfo({items}) {
 
     const calcInfo=(items)=>{
-        return "0";
+
+        if(items.length>1){
+            console.log(items)
+            return items.reduce((acc, curr) => getDealPrice(acc) + getDealPrice(curr), 0);
+        }else if(items.length==1){
+            return getDealPrice(items[0])
+        }else{
+            return 0
+        }
+
+       
+
+
     }
 
 
