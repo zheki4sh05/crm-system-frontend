@@ -7,7 +7,7 @@ import MainDropdown from "../../../shared/MainDropdown";
 import { getDealPrice } from "../../../app/util/deal";
 import { useState } from "react";
 
-function KanbanColumn({ deals, title, type, openHandler }) {
+function KanbanColumn({ deals, title, type, moveHandler,stages }) {
   const getInfoByType = (type, items) => {
     console.log(items)
     switch (type) {
@@ -82,7 +82,7 @@ function KanbanColumn({ deals, title, type, openHandler }) {
 
       <Box>
         {sortByType(sortType, deals).map((item, index) => (
-          <Deal key={index} type={"kanban"} deal={item} />
+          <Deal key={index} type={"kanban"} deal={item} stages={stages} moveHandler={moveHandler}/>
         ))}
       </Box>
     </Box>

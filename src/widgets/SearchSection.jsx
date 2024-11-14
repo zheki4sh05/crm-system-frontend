@@ -1,6 +1,4 @@
 import { Box } from "@mui/material";
-import Button from "../shared/MainBtn";
-import MainBtn from "../shared/MainBtn";
 import SearchBox from "../shared/SearchBox";
 
 function SearchSection({children}) {

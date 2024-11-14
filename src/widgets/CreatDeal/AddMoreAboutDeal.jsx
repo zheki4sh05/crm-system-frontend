@@ -4,7 +4,7 @@ import DialogContext from "../../processes/contextProvider/DialogContext";
 import MainBtn from "../../shared/MainBtn";
 import MainDropdown from "../../shared/MainDropdown";
 
-function AddMoreAboutDeal() {
+function AddMoreAboutDeal({handleSubmit}) {
     const { data, setDataHandler } = useContext(DialogContext);
 
     const [change, setChange] = useState(false)
@@ -31,15 +31,20 @@ function AddMoreAboutDeal() {
     return change && type.length!=0 && source.length!=0 
   }
 
-  const handleSubmit=()=>{
+  const handleFormSubmit=()=>{
 
-    setDataHandler({
-        ...data,
-        moreDeal: {
-            type:type,
-            source: source,
-        },
-      });
+    handleSubmit({
+      type:type,
+      source: source,
+  })
+
+    // setDataHandler({
+    //     ...data,
+    //     moreDeal: {
+    //         type:type,
+    //         source: source,
+    //     },
+    //   });
       setChange(false);
   }
 
@@ -71,7 +76,7 @@ function AddMoreAboutDeal() {
   
               <MainBtn
               
-              btnClickHandler={handleSubmit}
+              btnClickHandler={handleFormSubmit}
               text={"Сохранить"}
               disable={!checkSubmit()}
               

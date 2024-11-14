@@ -1,16 +1,26 @@
 import { Box, Drawer, Grid2, IconButton, Stack, Typography } from "@mui/material";
 import KanbanColumn from "./KanbanColumn";
+import { updateDeal, updateDealAction } from "../../../app/slices/dealSlice";
+import { useDispatch } from "react-redux";
 
 
 
 function Kanban({type,deals, stages}) {
+    
+    const dispatch = useDispatch()
 
     const getDealsByStage=(stageId)=>{
 
         return deals.filter((item,index)=>{
-            return item.stageId===stageId
+            return item.stageId==stageId
         })
 
+    }
+
+    const moveHandler=(item)=>{
+       // dispatch(updateDeal(item))
+      
+       dispatch(updateDealAction(item))
     }
     
 
@@ -23,7 +33,7 @@ function Kanban({type,deals, stages}) {
         {
         stages.map((item,index)=>(
 
-            <KanbanColumn key = {index} title={item.name} type={type} deals={getDealsByStage(item.id)} />
+            <KanbanColumn moveHandler={moveHandler} open key = {index} title={item.name} type={type} deals={getDealsByStage(item.id)} stages={stages} />
 
         ))
 

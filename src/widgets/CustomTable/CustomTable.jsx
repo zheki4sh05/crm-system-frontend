@@ -1,4 +1,4 @@
-import DialogContext from "../processes/contextProvider/DialogContext";
+import DialogContext from "../../processes/contextProvider/DialogContext";
 import * as React from "react";
 import PropTypes from 'prop-types';
 import { alpha } from "@mui/material/styles";
@@ -142,19 +142,28 @@ function createData(id, name, done, start, workers, role, access) {
   };
   
   function EnhancedTableToolbar(props) {
-    const { setDataHandler, openDialogHandler } = useContext(DialogContext);
+   // const { setDataHandler, openDialogHandler } = useContext(DialogContext);
   
-    const { numSelected, selectedList,data } = props;
+    const { numSelected, selectedList,data,handleOpenUserDialog } = props;
   
     const handleOpenDialog = () => {
-      setDataHandler({ list: selectedList, listData:data.filter(item=>{
+
+      handleOpenUserDialog({ list: selectedList, listData:data.filter(item=>{
         if(selectedList.includes(item.id)){
         
           return item
         }
   
-      }) });
-      openDialogHandler();
+      }) })
+
+      // setDataHandler({ list: selectedList, listData:data.filter(item=>{
+      //   if(selectedList.includes(item.id)){
+        
+      //     return item
+      //   }
+  
+      // }) });
+      // openDialogHandler();
     };
   
     return (
@@ -218,9 +227,8 @@ function createData(id, name, done, start, workers, role, access) {
     numSelected: PropTypes.number.isRequired,
   };
   
-  const CustomTable = memo(({ rows = [], tableTitle, tableHeadCells })=> {
-    console.log("CustomTable")
-    console.log(rows)
+  const CustomTable = memo(({ rows = [], tableTitle, tableHeadCells, handleOpenDialog })=> {
+
     const [order, setOrder] = React.useState("asc");
     const [orderBy, setOrderBy] = React.useState("calories");
     const [selected, setSelected] = React.useState([]);
@@ -243,7 +251,7 @@ function createData(id, name, done, start, workers, role, access) {
       setSelected([]);
     };
   
-    const handleClick = (event, id) => {
+    const handleClick = (_event, id) => {
       const selectedIndex = selected.indexOf(id);
       let newSelected = [];
   
@@ -298,6 +306,7 @@ function createData(id, name, done, start, workers, role, access) {
             numSelected={selected.length}
             title={tableTitle}
             data={rows}
+            handleOpenUserDialog={handleOpenDialog}
           />
           <TableContainer>
             <Table
@@ -349,12 +358,7 @@ function createData(id, name, done, start, workers, role, access) {
                         </TableCell>
                       ))}
   
-                      {/* <TableCell align="left">{row.name}</TableCell>
-                      <TableCell align="left">{row.done}</TableCell>
-                      <TableCell align="left">{row.start}</TableCell>
-                      <TableCell align="left">{row.workers}</TableCell>
-                      <TableCell align="left">{row.role}</TableCell>
-                      <TableCell align="left">{row.access}</TableCell> */}
+              
                     </TableRow>
                   );
                 })}

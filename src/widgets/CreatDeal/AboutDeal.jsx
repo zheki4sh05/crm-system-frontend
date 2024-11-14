@@ -1,126 +1,174 @@
-import {
-  Box,
-  Container,
-  Divider,
-  Stack,
-  TextField,
-  ToggleButton,
-  ToggleButtonGroup,
-} from "@mui/material";
+import { Box, Container, Divider, Stack, TextField } from "@mui/material";
 import MainDropdown from "./../../shared/MainDropdown";
 import { useContext, useEffect, useState } from "react";
-import MainBtn from './../../shared/MainBtn';
-import DialogContext from './../../processes/contextProvider/DialogContext';
+import MainBtn from "./../../shared/MainBtn";
+import { useSelector } from "react-redux";
+import { getGroups } from "../../app/slices/groupsSlice";
 
-function AboutDeal() {
-
-  const { data, setDataHandler } = useContext(DialogContext);
-
-  const [change, setChange] = useState(false)
-
-  const [name, setName] = useState("");
-
-  const [desc, setDesc] = useState("");
-
-  const [group, setGroup] = useState("");
-
-  const [stage, setStage] = useState({});
-
-  const [clientName, setClientName] = useState("");
+function AboutDeal({
+  handleSubmit,
+  data,
+  groupId = 0,
+  stages,
+  showGroup = true,
   
-  const [email, setEmail] = useState("");
+}) {
+ 
 
-  const [phone, setPhone] = useState("");
+  const groups = useSelector(getGroups);
+
+  const [change, setChange] = useState(false);
+
+  const [name, setName] = useState(data.name);
+
+  const [clientName, setClientName] = useState(data.customerDto.name);
+  const [lastName, setLastname] = useState(data.customerDto.lastname)
+  const [surName, setSurname] = useState(data.customerDto.surname)
+
+  const [desc, setDesc] = useState(data.description);
+
+  const [group, setGroup] = useState(groupId);
+
+  const [stage, setStage] = useState(data.stageId);
+
+  const [email, setEmail] = useState(data.customerDto.email);
+
+  const [phone, setPhone] = useState(data.customerDto.phone);
+
+  const [organizationName,setOrganizationName] = useState(data.organizationName)
+
+
 
   const handleNameChange = (event) => {
-    setChange(true)
+    setChange(true);
     setName(event.target.value);
   };
 
   const handleDescChange = (event) => {
-    setChange(true)
+    setChange(true);
     setDesc(event.target.value);
   };
   const changeGroupHandler = (group) => {
-    setChange(true)
+    setChange(true);
     setGroup(group);
   };
 
-  const handleStageChange=(event)=>{
-    setChange(true)
-      setStage(event.target.value)
+  const handleStageChange = (event) => {
+    setChange(true);
+    setStage(event.target.value);
+  };
+
+  const handleClientNameChange = (event) => {
+    setChange(true);
+    setClientName(event.target.value);
+  };
+
+  const handleClientEmailChange = (event) => {
+    setChange(true);
+    setEmail(event.target.value);
+  };
+  const handleClientPhoneChange = (event) => {
+    setChange(true);
+    setPhone(event.target.value);
+  };
+
+  const handleClientLastNameChange=(event)=>{
+    setChange(true);
+    setLastname(event.target.value)
+  }
+  const handleClientSurnameNameChange=(event)=>{
+    setChange(true);
+    setSurname(event.target.value)
   }
 
-  const handleClientNameChange=(event)=>{
-    setChange(true)
-    setClientName(event.target.value)
+  const handleOrganizationNameChange=(event)=>{
+    setChange(true);
+    setOrganizationName(event.target.value)
   }
 
-  const handleClientEmailChange=(event)=>{
-    setChange(true)
-    setEmail(event.target.value)
-  }
-  const handleClientPhoneChange=(event)=>{
-    setChange(true)
-    setPhone(event.target.value)
-  }
-
-  const getInputsByType = (group) => {
-    let label1;
-    let label2;
-
-    switch (group) {
-      case "B2C": {
-        label1 = "ФИО клиента";
-        label2 = "Email клиента";
-        break;
-      }
-      case "B2G": {
-        label1 = "Название организации";
-        label2 = "Email организации";
-        break;
-      }
-      case "B2B": {
-        label1 = "Название организации";
-        label2 = "Email организации";
-        break;
-      }
-    }
-
+  const getInputsByType = (type) => {
     return (
       <>
-        <TextField label={label1} variant="outlined" onChange={handleClientNameChange}/>
-        <TextField label={label2} variant="outlined" onChange={handleClientEmailChange}/>
-        <TextField label={"Номер телефона"} variant="outlined" onChange={handleClientPhoneChange}/>
+        <TextField
+          label={"Имя клиента"}
+          variant="outlined"
+          value={clientName}
+          onChange={handleClientNameChange}
+        />
+
+        <TextField
+          label={"Фамилия клиента"}
+          variant="outlined"
+          value={lastName}
+          onChange={handleClientLastNameChange}
+        />
+        <TextField
+          label={"Отчество клиента"}
+          value={surName}
+          variant="outlined"
+          onChange={handleClientSurnameNameChange}
+        />
+        <TextField
+          label={"Email"}
+          value={email}
+          variant="outlined"
+          onChange={handleClientEmailChange}
+        />
+        <TextField
+          label={"Номер телефона"}
+          variant="outlined"
+          value={phone}
+          onChange={handleClientPhoneChange}
+        />
+        {type == "B2B" || type == "B2G" ? (
+          <TextField
+            label={"Навание организации"}
+            variant="outlined"
+            value={organizationName}
+            onChange={handleOrganizationNameChange}
+          />
+        ) : null}
       </>
     );
   };
 
-  const handleSubmit = () => {
- console.log(name)
+  const handleFormSubmit = () => {
+    // setDataHandler({
+    //   ...data,
+    //   aboutDeal: {
+    //     name: name,
+    //     description: desc,
+    //     group: group,
+    //     stage: stage,
+    //     clientName: clientName,
+    //     email: email,
+    //     phone: phone,
+    //   },
+    // });
 
-    setDataHandler({
-      ...data,
-      aboutDeal: {
-       name:name,
+    handleSubmit({
+      name: name,
       description: desc,
-      group:group,
-      stage:stage,
-      clientName:clientName,
-      email:email,
-      phone:phone,
-      },
+      group: group,
+      stage: stage,
+      clientName: clientName,
+      email: email,
+      phone: phone,
     });
     setChange(false);
   };
 
-  
-
-
-  const checkSubmit=()=>{
-    return change && name.length!=0 && group.length!=0 && stage!=null && clientName.length!=0 && (email.length!=0 || phone.length!=0)
-  }
-
+  const checkSubmit = () => {
+    return (
+      change &&
+      name.length != 0 &&
+      group != 0 &&
+      stage != 0 &&
+      clientName.length != 0 &&
+      lastName.length !=0 &&
+      (email.length != 0 || phone.length != 0)
+    );
+  };
   return (
     <Box sx={{ mt: 5 }}>
       <Container maxWidth="sm">
@@ -140,32 +188,43 @@ function AboutDeal() {
             value={desc}
           />
 
-
-          <MainDropdown
-            title="Группа"
-            list={[{ name: "B2B", value: "B2B" },{ name: "B2C", value: "B2C" },{ name: "B2G", value: "B2G" }]}
-            changeHandler={changeGroupHandler}
-          />
-
-          <MainDropdown title="Стадия" list={[{ name: "", value: "" }]} changeHandler={handleStageChange}/>
-          {getInputsByType(group)}
-
-          <Box sx={{
-            display:"flex",
-            justifyContent:"flex-end"
-          }} >
-
-            <MainBtn
-            
-            btnClickHandler={handleSubmit}
-            text={"Сохранить"}
-            disable={!checkSubmit()}
-            
+          {showGroup ? (
+            <MainDropdown
+              title="Группа"
+              list={groups}
+              changeHandler={changeGroupHandler}
+              defaultIndex={groups.indexOf(
+                groups.filter((item) => item.id == group)[0]
+              )}
             />
+          ) : null}
 
+          {group != 0 && showGroup ? (
+            <MainDropdown
+              list={stages}
+              size="small"
+              changeHandler={handleStageChange}
+              defaultIndex={stages.indexOf(
+                stages.filter((item) => item.id == data.stageId)[0]
+              )}
+            />
+          ) : null}
+
+          {getInputsByType(groups.filter((item) => item.id == group)[0].type)}
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <MainBtn
+              btnClickHandler={handleFormSubmit}
+              text={"Сохранить"}
+              disable={!checkSubmit()}
+            />
           </Box>
         </Stack>
-
       </Container>
     </Box>
   );

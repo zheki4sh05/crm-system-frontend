@@ -1,5 +1,6 @@
 import DialogEntityProvider from "../../processes/contextProvider/api/DialogEntityProvider";
-import CustomTable from "../Customtable";
+import CustomTable from "../CustomTable/CustomTable";
+
 import EntityOverviewWindow from "../EntityOverviewWindow";
 
 function MyTaskTable() {

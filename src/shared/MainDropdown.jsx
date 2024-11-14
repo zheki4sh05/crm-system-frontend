@@ -5,10 +5,8 @@ import MenuItem from '@mui/material/MenuItem';
 
 import Select from '@mui/material/Select';
 
-export default function MainDropdown({title, list, changeHandler, size="small",displayEmpty, defaultValue=0}) {
-  const [value, setValue] = React.useState(list[defaultValue].id);
-
-
+export default function MainDropdown({title, list, changeHandler, size="small",displayEmpty, defaultIndex=0}) {
+  const [value, setValue] = React.useState(list[defaultIndex].id);
 
   const handleChange = (event) => {
     setValue(event.target.value);
