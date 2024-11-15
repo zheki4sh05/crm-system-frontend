@@ -2,7 +2,7 @@ import { Box, Container, Stack, TextField } from "@mui/material";
 
 import MainBtn from "./../../shared/MainBtn";
 import { useState } from "react";
-
+//about deal component
 
 function AboutDeal({
   handleSubmit,
