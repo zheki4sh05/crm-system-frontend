@@ -55,15 +55,15 @@ const statsSlice = createSlice({
       })
 
   export function getStats(state){
-    return state[DomainNames.stages].stats;
+    return state[DomainNames.stats].stats;
 }
 
 export function getStatsStatus(state){
-    return state[DomainNames.stages].status
+    return state[DomainNames.stats].status
   }
 
   export function getStatsError(state){
-    return state[DomainNames.stages].error
+    return state[DomainNames.stats].error
   }
 
 

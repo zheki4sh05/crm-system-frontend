@@ -5,7 +5,8 @@ import MenuItem from '@mui/material/MenuItem';
 
 import Select from '@mui/material/Select';
 
-export default function MainDropdown({title, list, changeHandler, size="small",displayEmpty, defaultIndex=0}) {
+
+export default function MainDropdown({title, list, changeHandler, size="small",displayEmpty, defaultIndex=0,zIndex=100}) {
   const [value, setValue] = React.useState(list[defaultIndex].id);
 
   const handleChange = (event) => {
@@ -15,8 +16,12 @@ export default function MainDropdown({title, list, changeHandler, size="small",d
 
   return (
  <>
+
+
+  
         <InputLabel id="demo-simple-select-label"  >{title}</InputLabel>
         <Select
+        
           labelId="demo-simple-select-label"
           id="demo-simple-select"
           value={value}
@@ -28,12 +33,13 @@ export default function MainDropdown({title, list, changeHandler, size="small",d
         >
             {
                 list.map((item,index)=>(
-                    <MenuItem key={index} value={item.id}>{item.name}</MenuItem>
+                    <MenuItem  sx={{zIndex:10000000}} key={index} value={item.id}>{item.name}</MenuItem>
                 ))
             }
          
         
         </Select>
+       
         </>
   );
 }

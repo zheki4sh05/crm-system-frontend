@@ -7,9 +7,12 @@ import {
     List,
     ListItem,
     Container,
+    Box,
 
   } from "@mui/material";
   import { useEffect, useState } from "react";
+import { formatDateFromTimestamp } from "../../app/util/date";
+import Deadline from "./DeadLine";
   
   function ToDoList({handleTodos, initialList=[]}) {
   
@@ -17,6 +20,8 @@ import {
     const [todos, setTodos] = useState(initialList);
     const [isEdited, setIsEdited] = useState(false);
     const [editedId, setEditedId] = useState(null);
+
+    const [deadline,setDeadline] = useState({startDate:new Date().getTime(),finishDate:new Date().getTime()})
   
     const onChange = (e) => {
       setInputVal(e.target.value);
@@ -26,11 +31,11 @@ import {
       if (!isEdited) {
         setTodos([
           ...todos,
-          { val: inputVal, is_done: false, id:0 },
+          { name: inputVal, is_done: false, id: new Date().getTime(), start: deadline.startDate, finishAt:deadline.finishDate},
         ]);
       } else {
      
-        setTodos([...todos, { val: inputVal, is_done: false, id: editedId }]);
+        setTodos([...todos, { name: inputVal, is_done: false, id: editedId,start: deadline.startDate, finishAt:deadline.finishDate }]);
       }
       setInputVal("");
       setIsEdited(false);
@@ -50,7 +55,7 @@ import {
     const handleDone = (id) => {
       const updated = todos.map((todo) => {
         if (todo.id === id) {
-          todo.isDone = !todo.is_done;
+          todo.is_done = !todo.is_done;
         }
         return todo;
       });
@@ -61,19 +66,29 @@ import {
       const newTodos = todos.filter((todo) => todo.id !== id);
       const editVal = todos.find((todo) => todo.id === id);
       setEditedId(editVal.id);
-      setInputVal(editVal.val);
+      setInputVal(editVal.name);
       setTodos(newTodos);
+      console.log(editVal)
+      setDeadline({startDate:editVal.start, finishDate:editVal.finishAt})
       setIsEdited(true);
+     
     };
+
+    const deadlineHandler=(data)=>{
+      setDeadline({...data})
+    }
   
     return (
-      <Container maxWidth={"sm"} sx={{ mt: 5 }}>
+      <Container sx={{ mt: 5, maxWidth:"100%" }}>
+        <Box sx={{display:"flex", flexDirection:"row",gap:"10px",alignItems:"center"}}> 
         <TextField
           variant="outlined"
           onChange={onChange}
           label="Название"
           value={inputVal}
         />
+        <Deadline titleFrom="Начать с"  titleTo="Закончить" setDataHandler={deadlineHandler} initialData={deadline}/>
+        <Box>
         <Button
           size="large"
           variant={isEdited ? "outlined" : "contained"}
@@ -84,6 +99,12 @@ import {
         >
           {isEdited ? "Изменить" : "Добавить"}
         </Button>
+        </Box>
+       
+
+        </Box>
+
+        
         <List>
           {todos.map((todo, index) => {
             return (
@@ -99,9 +120,17 @@ import {
                 >
                   {todo.name}
                 </Typography>
-                <Box sx={{display:"flex", flexDirection:"column"}} >
-                    <Typography>{todo.start}</Typography>
-                    <Typography>{todo.finishAt}</Typography>
+                <Box sx={{display:"flex", flexDirection:"row",gap:"10px", m:"0 10px 0 10px"}} >
+                    <Box sx={{display:"flex", flexDirection:"column"}}>
+                      <Typography variant="caption">Начало</Typography>
+                        <Typography>{formatDateFromTimestamp(todo.start)}</Typography>
+                    </Box>
+                    <Box sx={{display:"flex", flexDirection:"column"}}>
+                    <Typography variant="caption">Конец</Typography>
+                         <Typography>{formatDateFromTimestamp(todo.finishAt)}</Typography>
+                    </Box>
+                  
+                    
                 </Box>
                 <Button
                   onClick={() => handleEdit(todo.id)}

@@ -1,21 +1,18 @@
-import { Box, Container, Divider, Stack, TextField } from "@mui/material";
-import MainDropdown from "./../../shared/MainDropdown";
-import { useContext, useEffect, useState } from "react";
+import { Box, Container, Stack, TextField } from "@mui/material";
+
 import MainBtn from "./../../shared/MainBtn";
-import { useSelector } from "react-redux";
-import { getGroups } from "../../app/slices/groupsSlice";
+import { useState } from "react";
+
 
 function AboutDeal({
   handleSubmit,
   data,
-  groupId = 0,
-  stages,
-  showGroup = true,
+  type
   
 }) {
  
 
-  const groups = useSelector(getGroups);
+  // const groups = useSelector(getGroups);
 
   const [change, setChange] = useState(false);
 
@@ -27,9 +24,9 @@ function AboutDeal({
 
   const [desc, setDesc] = useState(data.description);
 
-  const [group, setGroup] = useState(groupId);
+  // const [group, setGroup] = useState(groupId);
 
-  const [stage, setStage] = useState(data.stageId);
+  // const [stage, setStage] = useState(data.stageId);
 
   const [email, setEmail] = useState(data.customerDto.email);
 
@@ -48,15 +45,15 @@ function AboutDeal({
     setChange(true);
     setDesc(event.target.value);
   };
-  const changeGroupHandler = (group) => {
-    setChange(true);
-    setGroup(group);
-  };
+  // const changeGroupHandler = (group) => {
+  //   setChange(true);
+  //   setGroup(group);
+  // };
 
-  const handleStageChange = (event) => {
-    setChange(true);
-    setStage(event.target.value);
-  };
+  // const handleStageChange = (event) => {
+  //   setChange(true);
+  //   setStage(event.target.value);
+  // };
 
   const handleClientNameChange = (event) => {
     setChange(true);
@@ -149,8 +146,6 @@ function AboutDeal({
     handleSubmit({
       name: name,
       description: desc,
-      group: group,
-      stage: stage,
       clientName: clientName,
       email: email,
       phone: phone,
@@ -162,8 +157,7 @@ function AboutDeal({
     return (
       change &&
       name.length != 0 &&
-      group != 0 &&
-      stage != 0 &&
+    
       clientName.length != 0 &&
       lastName.length !=0 &&
       (email.length != 0 || phone.length != 0)
@@ -188,13 +182,13 @@ function AboutDeal({
             value={desc}
           />
 
-          {showGroup ? (
+          {/* {groups.length!=0 && showGroup  ? (
             <MainDropdown
               title="Группа"
               list={groups}
               changeHandler={changeGroupHandler}
               defaultIndex={groups.indexOf(
-                groups.filter((item) => item.id == group)[0]
+                groups[0]
               )}
             />
           ) : null}
@@ -208,9 +202,9 @@ function AboutDeal({
                 stages.filter((item) => item.id == data.stageId)[0]
               )}
             />
-          ) : null}
+          ) : null} */}
 
-          {getInputsByType(groups.filter((item) => item.id == group)[0].type)}
+          {getInputsByType(type)}
 
           <Box
             sx={{

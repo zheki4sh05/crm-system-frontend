@@ -4,7 +4,9 @@ const DomainNames = {
     deal:"deal",
     groups:"groups",
     stages:"stages",
-    stats:"stats"
+    stats:"stats",
+    source:"source",
+    type:"type"
 
 }
 export default DomainNames;

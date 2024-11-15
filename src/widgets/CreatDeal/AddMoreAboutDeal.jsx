@@ -1,42 +1,79 @@
-import { Box, Container, Stack } from "@mui/material";
-import { useContext, useState } from "react";
-import DialogContext from "../../processes/contextProvider/DialogContext";
+import {
+  Box,
+  Container,
+  Stack,
+} from "@mui/material";
+import { useState } from "react";
 import MainBtn from "../../shared/MainBtn";
-import MainDropdown from "../../shared/MainDropdown";
+import RadioButtonsGroup from "../../shared/RadioButtonsGroup";
+import { useSelector } from "react-redux";
+import { getDealTypes } from "../../app/slices/typeDeal";
+import { getSources } from "../../app/slices/sourceSlice";
 
-function AddMoreAboutDeal({handleSubmit}) {
-    const { data, setDataHandler } = useContext(DialogContext);
-
-    const [change, setChange] = useState(false)
-
-    const [type, setType] = useState("")
-    const [source,setSource] = useState("")
-
-
-    const changeTypeHandler=(value)=>{
-        setChange(true)
-        setType(value)
-
-    }
-
-    
-    const changeSourceHandler=(value)=>{
-        setChange(true)
-        setSource(value)
-    }
-
-    
-  const checkSubmit=()=>{
-
-    return change && type.length!=0 && source.length!=0 
+function AddMoreAboutDeal({
+  handleSubmit,
+  stages,
+  groups,
+  initialData = {
+    type: "B2C",
+    source: 1,
+    group: 0,
+    stage: 0,
   }
+}) {
+  const sources = useSelector(getSources)
 
-  const handleFormSubmit=()=>{
+  const dealTypes = useSelector(getDealTypes)
 
+  const [change, setChange] = useState(false);
+
+  const [type, setType] = useState(initialData.type);
+  const [source, setSource] = useState(initialData.source);
+  const [group, setGroup] = useState(initialData.group);
+  const [stage, setStage] = useState(initialData.stage);
+
+  const changeTypeHandler = (value) => {
+    setChange(true);
+    setType(value);
+
+    if(group==0){
+        setGroup(getGroupsByDealType(value)[0].id)
+    }
+
+    
+  };
+
+  const changeSourceHandler = (value) => {
+    setChange(true);
+   
+    setSource(value);
+  };
+
+  const changeStageHandler = (value) => {
+    setChange(true);
+    setStage(value);
+  };
+  const handleChangeGroup = (value) => {
+    setChange(true);
+    setGroup(value);
+
+    if(stage==0){
+      setStage(getStagesByGroup(value)[0].id)
+    }
+
+  };
+
+  const checkSubmit = () => {
+    return change && type.length != 0 && source.length != 0;
+  };
+
+  const handleFormSubmit = () => {
     handleSubmit({
-      type:type,
+      type: type,
       source: source,
-  })
+      group: group,
+      stage: stage,
+    });
 
     // setDataHandler({
     //     ...data,
@@ -45,50 +82,76 @@ function AddMoreAboutDeal({handleSubmit}) {
     //         source: source,
     //     },
     //   });
-      setChange(false);
-  }
+    setChange(false);
+  };
 
-    return ( 
-    
-        <Box sx={{ mt: 5 }}>
-        <Container maxWidth="sm">
-          <Stack direction="column" spacing={2}>
-           
-  
-            <MainDropdown
-              title="Тип сделки"
-              list={[{ name: "Не выбран", value: "Не выбран" },{ name: "B2C", value: "B2C" },{ name: "B2G", value: "B2G" }]}
-              changeHandler={changeTypeHandler}
-            />
+  const getStagesByGroup = (value) => {
+    return stages.filter((item) => item.groupId == value);
+  };
 
-            
-            <MainDropdown
-              title="Источник"
-              list={[{ name: "Не выбран", value: 1 },{ name: "B2C", value: "B2C" },{ name: "B2G", value: "B2G" }]}
-              changeHandler={changeSourceHandler}
-            />
-  
-          
-            <Box sx={{
-              display:"flex",
-              justifyContent:"flex-end"
-            }} >
-  
-              <MainBtn
+  const getGroupsByDealType = (type) => {
+    return groups.filter((item) => item.type == type);
+  };
+
+  return (
+    <Box sx={{ mt: 5 }}>
+      <Container maxWidth="sm">
+        <Stack direction="column" spacing={2}>
+          <RadioButtonsGroup
+            title={"Источник"}
+            items={sources}
+            handleChange={changeSourceHandler}
+            initialValue={source}
+          />
+
+          <RadioButtonsGroup
+            title={"Тип сделки"}
+            items={dealTypes}
+            handleChange={changeTypeHandler}
+            initialValue={type}
+          />
+
+          {groups.length != 0 && stages.lenght!=0 ? (
+            <>
+              <RadioButtonsGroup
+                title={"Группа"}
+                items={getGroupsByDealType(type)}
+                handleChange={handleChangeGroup}
+                initialValue={group}
+              />
+
+              {group != 0 ?
+             
+              <RadioButtonsGroup
+                title={"Стадия"}
+                items={getStagesByGroup(group)}
+                handleChange={changeStageHandler}
+                initialValue={stage}
+              />
+              :
+              null
               
+              }
+              
+            </>
+          ) : null}
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <MainBtn
               btnClickHandler={handleFormSubmit}
               text={"Сохранить"}
               disable={!checkSubmit()}
-              
-              />
-  
-            </Box>
-          </Stack>
-  
-        </Container>
-      </Box>
-    
-    );
+            />
+          </Box>
+        </Stack>
+      </Container>
+    </Box>
+  );
 }
 
 export default AddMoreAboutDeal;

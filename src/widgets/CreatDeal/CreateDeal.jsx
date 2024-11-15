@@ -3,8 +3,16 @@ import AboutDeal from "./AboutDeal";
 import AddMoreAboutDeal from "./AddMoreAboutDeal";
 import CreateEntity from "../../features/CreateEntity";
 import DialogContext from "../../processes/contextProvider/DialogContext";
+import {initDeal, initMoreAboutDeal } from "../../app/util/initialEntity";
+import { useSelector } from "react-redux";
+import { getGroups } from "../../app/slices/groupsSlice";
+import { getStages } from "../../app/slices/stagesSlice";
 
 const CreateDial = memo(({ reloadHandler }) => {
+
+  const groups = useSelector(getGroups)
+  const stages = useSelector(getStages)
+
   const { data, getDialogResult, resetDialogContext, setDataHandler } =
     useContext(DialogContext);
 
@@ -19,21 +27,22 @@ const CreateDial = memo(({ reloadHandler }) => {
     });
   };
 
-  const handleSubmitAddMoreAboutDeal = (newData) => {};
+  const handleSubmitAddMoreAboutDeal = (newData) => {
+    setDataHandler({
+      ...data,
+      moreDeal: { ...newData },
+    });
+  };
 
   const getDataForAboutDeal = () => {
     if ("aboutDeal" in data) {
       return { ...data.aboutDeal };
     } else {
       return {
-        name: "",
-        description: "",
-        group: "",
-        stage: {},
-        clientName: "",
-        email: "",
-        phone: "",
-      };
+        ...initDeal()
+      }
+
+        
     }
   };
 
@@ -42,24 +51,31 @@ const CreateDial = memo(({ reloadHandler }) => {
       return { ...data.moreDeal };
     } else {
       return {
-        type: "",
-        source: "",
+       ...initMoreAboutDeal()
       };
     }
   };
+
+  const getDealType=()=>{
+
+  }
 
   return (
     <CreateEntity
       stepsNames={["О сделке", "Дополнительно"]}
       stepsPages={[
+        <AddMoreAboutDeal
+          initialData={getDataForMoreAboutDeal()}
+          handleSubmit={handleSubmitAddMoreAboutDeal}
+          groups={groups}
+          stages={stages}
+        />,
         <AboutDeal
           handleSubmit={handleSubmitAboutDeal}
           data={getDataForAboutDeal()}
-        />,
-        <AddMoreAboutDeal
-          data={getDataForMoreAboutDeal()}
-          handleSubmit={handleSubmitAddMoreAboutDeal}
-        />,
+          type ={getDealType()} 
+        />
+        
       ]}
       name={"Создание сделки"}
       handleSaveContext={handleSaveUploadedDoc}

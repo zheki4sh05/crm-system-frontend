@@ -5,7 +5,8 @@ const statusTypes = {
     failed:'failed',
     idle:'idle',
     mainrole:"admin",
-    role:"manager"
+    role:"manager",
+    error:"error"
 }
 
 export default statusTypes;

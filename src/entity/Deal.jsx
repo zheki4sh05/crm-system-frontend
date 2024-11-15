@@ -21,6 +21,8 @@ import CustomTableWrapperModal from "./../widgets/CustomTable/CustomTableWrapper
 import DealOrders from "./../widgets/CreatDeal/DealOrders";
 import ToDoList from "../widgets/CreatDeal/ToDoList";
 import DealTasks from "../widgets/CreatDeal/DealTasks";
+import AddMoreAboutDeal from "../widgets/CreatDeal/AddMoreAboutDeal";
+import AddMoreAboutDealWrapper from "../widgets/CreatDeal/AddMoreAboutDealWrapper";
 
 const bull = (
   <Box
@@ -62,7 +64,7 @@ function Deal({ type, deal, moveHandler, stages }) {
 
       // onClick={toggleDrawer(anchor, false)}
     >
-      <Box sx={{ ml: 2 }}>
+      <Box sx={{ ml: 2 ,width:"100%"}}>
         <Grid2 container spacing={2}>
           <Grid2 xs={1}>
             <Stack direction="row">
@@ -81,8 +83,8 @@ function Deal({ type, deal, moveHandler, stages }) {
           </Grid2>
           <Grid2 xs={4}></Grid2>
         </Grid2>
-        <Grid2 container spacing={1}>
-          <Grid2 xs={8}>
+        <Grid2 container spacing={1}  >
+          <Grid2 size={10} >
             <CustomTabPanel
               content={{
                 tabNames: [
@@ -93,7 +95,7 @@ function Deal({ type, deal, moveHandler, stages }) {
                 ],
               }}
             >
-              <Box>
+              <Box sx={{width:"100%"}}>
                 <AboutDeal
                   data={deal}
                   handleSubmit={handleUpdateAboutDeal}
@@ -110,10 +112,21 @@ function Deal({ type, deal, moveHandler, stages }) {
                 />
                
               </Box>
-              <Box>
+              <Box sx={{width:"100%"}}>
                 <DealTasks data={deal}/>
 
                 
+              </Box>
+
+              <Box>
+
+                
+
+                <AddMoreAboutDealWrapper
+                
+                  data={deal}
+                
+                />
               </Box>
             </CustomTabPanel>
           </Grid2>
