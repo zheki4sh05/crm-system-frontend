@@ -15,18 +15,16 @@ import {
 } from "@mui/material";
 import CustomTabPanel from "../widgets/CustomTabPanel";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  controlSearchStage,
-  getDealSearchResult,
-  setSearcResult,
-} from "../app/slices/dealSlice";
+
 import statusTypes from "../app/constants/statusTypes";
 import CloseIcon from "@mui/icons-material/Close";
+import { controlSearchStage, getSearchResult, getSearchStatus, setSearcResult } from "../app/slices/searchSlice";
 
-export default function SearchBox({ primaryText }) {
+
+export default function SearchBox({ primaryText, type}) {
   const [searchData, setSearchData] = useState("");
 
-  const searchState = useSelector(getDealSearchResult);
+  const searchState = useSelector(getSearchStatus);
 
   const dispatch = useDispatch();
 
@@ -38,47 +36,43 @@ export default function SearchBox({ primaryText }) {
   });
 
   const handleSearchChange = (event) => {
-
     setSearchData(event.target.value.trim());
   };
 
   function handleSearch() {
     return new Promise((resolve) => {
       setTimeout(() => {
-        dispatch(setSearcResult([1]))
+        dispatch(setSearcResult([1]));
         resolve();
-      }, 4000); 
+      }, 4000);
     });
   }
 
+  
+
   const searchClickHandler = () => {
+    if (searchData.length != 0 && searchData != "") {
 
-    if(searchData.length!=0 && searchData!=""){
-      dispatch(controlSearchStage(statusTypes.loading));    
-      handleSearch().then(()=>{dispatch(controlSearchStage(statusTypes.succeeded))})
+      dispatch(controlSearchStage(statusTypes.loading));
+      handleSearch().then(() => {
+        dispatch(controlSearchStage(statusTypes.succeeded));
+      });
     }
-
   };
 
   const toggleDrawer = (anchor, open) => (event) => {
-
     setState({ ...state, [anchor]: open });
-
   };
 
-  const handleState=(open)=>{
+  const handleState = (open) => {
     setState({ ...state, right: open });
-  }
+  };
 
-
-  React.useEffect(()=>{
-
-    if(searchState===statusTypes.succeeded){
-     
-      handleState(true)
+  React.useEffect(() => {
+    if (searchState === statusTypes.succeeded) {
+      handleState(true);
     }
-
-  },[searchState])
+  }, [searchState]);
 
   const list = (anchor) => (
     <Box
@@ -101,76 +95,61 @@ export default function SearchBox({ primaryText }) {
           </Grid2>
           <Grid2 item xs={4}>
             <Typography sx={{ mt: 2 }} variant="h6" gutterBottom>
-              Сделка
+              Результат поиска
             </Typography>
           </Grid2>
           <Grid2 item xs={4}></Grid2>
         </Grid2>
         <Grid2 container spacing={1}>
           <Grid2 item xs={8}>
-            <CustomTabPanel
-              content={{
-                tabNames: ["Мои личные данные", "Моё место работы"],
-              }}
-            >
-              <Box></Box>
-              <Box>
+          <Box>
                 <div>гыгыгы</div>
               </Box>
-            </CustomTabPanel>
           </Grid2>
         </Grid2>
       </Box>
     </Box>
   );
 
-  const getContentBySearchType=(searchState)=>{
-    if(searchState === statusTypes.loading){
-        console.log(searchState)
-        return (
-
-          <Box sx={{ display: "flex" }}>
+  const getContentBySearchType = (searchState) => {
+    if (searchState === statusTypes.loading) {
+      console.log(searchState);
+      return (
+        <Box sx={{ display: "flex" }}>
           <CircularProgress />
         </Box>
-
-        )
-
-    }else if(searchState === statusTypes.idle ||  searchState === statusTypes.succeeded){
-
+      );
+    } else if (
+      searchState === statusTypes.idle ||
+      searchState === statusTypes.succeeded
+    ) {
       return (
         <>
+          <InputBase
+            sx={{ ml: 1, flex: 1 }}
+            placeholder={primaryText}
+            value={searchData}
+            onChange={handleSearchChange}
+            inputProps={{ "aria-label": "search google maps" }}
+          />
 
-<InputBase
-              sx={{ ml: 1, flex: 1 }}
-              placeholder={primaryText}
-              value={searchData}
-              onChange={handleSearchChange}
-              inputProps={{ "aria-label": "search google maps" }}
-            />
-
-            <MainBtn type="search" btnClickHandler={searchClickHandler} />
-        
+          <MainBtn type="search" btnClickHandler={searchClickHandler} />
         </>
+      );
+    } else if (searchState === statusTypes.failed) {
+      <>
+        <InputBase
+          sx={{ ml: 1, flex: 1 }}
+          placeholder={"Найти"}
+          value={searchData}
+          onChange={handleSearchChange}
+          inputProps={{ "aria-label": "search google maps" }}
+        />
 
-        
-      )
-
-    }else if(searchState === statusTypes.failed){
-<>
-
-<InputBase
-              sx={{ ml: 1, flex: 1 }}
-              placeholder={primaryText}
-              value={searchData}
-              onChange={handleSearchChange}
-              inputProps={{ "aria-label": "search google maps" }}
-            />
-
-            <MainBtn type="search" btnClickHandler={searchClickHandler} />
-        
-        </>
+        <MainBtn type="search" btnClickHandler={searchClickHandler} />
+      </>;
     }
-  }
+  };
 
   return (
     <Paper

@@ -1,7 +1,8 @@
 import { Box } from "@mui/material";
 import SearchBox from "../shared/SearchBox";
+import PathConstants from "../shared/pathConstants";
 
-function SearchSection({children}) {
+function SearchSection({title="Найти сделки...",type,children}) {
     return ( 
     
     <Box sx={{
@@ -19,7 +20,7 @@ function SearchSection({children}) {
 
     
 
-      <SearchBox primaryText={"Найти сделки..."} />
+      <SearchBox primaryText={title} type={type}/>
 
 
     </Box> 

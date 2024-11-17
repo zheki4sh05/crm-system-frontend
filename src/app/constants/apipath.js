@@ -35,6 +35,12 @@ const api={
     stats:{
         url:base.concat("stage"),
         fetch:base.concat("/fetch")
+    },
+    documents:{
+        url:base.concat("document"),
+        fetch:base.concat("/fetch"),
+        upload:base.concat("/upload"),
+        update:base.concat("/update")
     }
 }
 
