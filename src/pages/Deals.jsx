@@ -28,6 +28,7 @@ import GroupsControlBody from "../widgets/modal/GroupsControlBody";
 import { getCompany } from "../app/slices/companySlice";
 
 import StagesControlBody from "../widgets/modal/StagesControlBody";
+import PathConstants from "../shared/pathConstants";
 
 const Deals = memo(function Deals() {
   const groups = useSelector(getGroups);
@@ -107,7 +108,7 @@ const Deals = memo(function Deals() {
           }}
         >
           <Box sx={{ flex: 1 / 2 }}>
-            <SearchSection>
+            <SearchSection type={PathConstants.DEALS} >
               <CustomStepper buttonText={"Создать"} />
             </SearchSection>
           </Box>

@@ -1,25 +1,45 @@
 import { Box, Typography } from "@mui/material";
 import { useLocation } from "react-router-dom";
-import { getPageNameByPath } from "../shared/pathConstants";
+import PathConstants, { getPageNameByPath } from "../shared/pathConstants";
 import { useSelector } from "react-redux";
 import { getDeals } from "../app/slices/dealSlice";
+import { getDocs } from "../app/slices/documentSlice";
+import { useState } from "react";
 
 function PageInfo() {
+    const location = useLocation();
+
+    
 
     
     const data = [
         { name: 1, text: 'Всего' },
+        { name: 2, text: 'Всего' },
     
       ];
 
-    const location = useLocation();
+  
 
     const getItemInfo=(name)=>{
 
         switch(name){
 
-            case 1:{
-                return useSelector(getDeals).length
+            case PathConstants.DEALS:{
+                return(
+
+                    <Typography >Всего: {useSelector(getDeals).length}</Typography>
+                )
+                
+                
+                
+            }
+            case PathConstants.DOCS:{
+
+                return(
+
+                    <Typography >Всего: {useSelector(getDocs).length}</Typography>
+                )
+            
             }
         }
 
@@ -35,10 +55,9 @@ function PageInfo() {
 
         <Box sx={{marginLeft:"40px", display:"flex", flexDirection:"row", alignItems:"center"}} >
 
-            {data.map((item,index)=>(
-
-                    <Typography key={index} >{item.text}: {getItemInfo(item.name)}</Typography>
-            ))}
+            {
+                getItemInfo(location.pathname)
+            }
 
         </Box>
 
