@@ -53,6 +53,17 @@ export function initMoreAboutDeal(){
         stage: 0,
     }
 }
+export function initDocument(){
+  return {
+    id:"",
+    name:"",
+    description:"",
+    type:0,
+    size:"",
+    date:"",
+    format:""
+  }
+}
 // export function initCustomerDto(){
 //     return {
         

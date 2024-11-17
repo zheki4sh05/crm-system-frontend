@@ -1,6 +1,6 @@
-const PathConstants = {
+export const PathConstants = {
     HOME: "/",
-    DEALS: "deals",
+    DEALS: "/deals",
     TASKS:"/tasks",
     DOCS:"/documents",
     CUSTOMER:"/customer",
@@ -8,13 +8,16 @@ const PathConstants = {
 
 }
 
-const delimetr = "/"
 
 export function getPageNameByPath(path){
+
     switch(path){
-        case delimetr+PathConstants.DEALS :{
+        case PathConstants.DEALS :{
             return "Сделки"
         } 
+        case PathConstants.DOCS:{
+             return "Документы"
+        }
     }
 }
 

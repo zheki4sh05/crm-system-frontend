@@ -6,7 +6,9 @@ const DomainNames = {
     stages:"stages",
     stats:"stats",
     source:"source",
-    type:"type"
+    type:"type",
+    documents:'documents',
+    search:'search'
 
 }
 export default DomainNames;
