@@ -30,7 +30,7 @@ import { getCompany } from "../app/slices/companySlice";
 import StagesControlBody from "../widgets/modal/StagesControlBody";
 import PathConstants from "../shared/pathConstants";
 
-const Deals = memo(function Deals() {
+function Deals() {
   const groups = useSelector(getGroups);
 
   useEffect(() => {
@@ -51,10 +51,11 @@ const Deals = memo(function Deals() {
     });
   }
 
+  const deals = useSelector(getDeals)
 
   const [activeGroup, setActiveGroup] = useState(initGroup(groups));
 
-  const [deals,setDeals] = useState(useSelector(getDeals))
+  // const [deals,setDeals] = useState(useSelector(getDeals))
 
 
   const handleChangeGroup = (id) => {
@@ -183,6 +184,6 @@ const Deals = memo(function Deals() {
       <CreateDial reloadHandler={makeRequest} />
     </DialogEntityProvider>
   );
-});
+};
 
 export default Deals;

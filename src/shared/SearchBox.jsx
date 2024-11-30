@@ -18,7 +18,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import statusTypes from "../app/constants/statusTypes";
 import CloseIcon from "@mui/icons-material/Close";
-import { controlSearchStage, getSearchResult, getSearchStatus, setSearcResult } from "../app/slices/searchSlice";
+import { clearSearchedData, controlSearchStage, getSearchResult, getSearchStatus, getSearchType, setSearchType, setSearcResult } from "../app/slices/searchSlice";
+import { searchBox } from "../app/util/searchType";
 
 
 export default function SearchBox({ primaryText, type}) {
@@ -27,6 +28,8 @@ export default function SearchBox({ primaryText, type}) {
   const searchState = useSelector(getSearchStatus);
 
   const dispatch = useDispatch();
+
+  const searchType = useSelector(getSearchType)
 
   const [state, setState] = useState({
     top: false,
@@ -52,6 +55,7 @@ export default function SearchBox({ primaryText, type}) {
 
   const searchClickHandler = () => {
     if (searchData.length != 0 && searchData != "") {
+      dispatch(setSearchType(searchBox))
 
       dispatch(controlSearchStage(statusTypes.loading));
       handleSearch().then(() => {
@@ -69,8 +73,9 @@ export default function SearchBox({ primaryText, type}) {
   };
 
   React.useEffect(() => {
-    if (searchState === statusTypes.succeeded) {
+    if (searchState === statusTypes.succeeded && searchType==searchBox) {
       handleState(true);
+      dispatch(clearSearchedData())
     }
   }, [searchState]);
 
@@ -112,8 +117,8 @@ export default function SearchBox({ primaryText, type}) {
   );
 
   const getContentBySearchType = (searchState) => {
-    if (searchState === statusTypes.loading) {
-      console.log(searchState);
+    if (searchState === statusTypes.loading && searchType===searchBox) {
+     
       return (
         <Box sx={{ display: "flex" }}>
           <CircularProgress />

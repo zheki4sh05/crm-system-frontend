@@ -111,11 +111,6 @@ const menu_items = [
     icon: <WorkIcon />
   },
   {
-    path:PathConstants.TASKS,
-    name:"Мои задачи",
-    icon: <FormatListBulletedIcon />
-  },
-  {
     path:PathConstants.DOCS,
     name:"Документы",
     icon: <TopicIcon />

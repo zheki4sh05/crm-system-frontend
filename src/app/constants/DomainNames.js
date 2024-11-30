@@ -8,7 +8,8 @@ const DomainNames = {
     source:"source",
     type:"type",
     documents:'documents',
-    search:'search'
+    search:'search',
+    workers:'workers'
 
 }
 export default DomainNames;

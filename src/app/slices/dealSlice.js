@@ -13,6 +13,7 @@ const initialState = {
       stageId: 1,
       started: 1636647992345,
       organizationName:"",
+      worker:1,
       customerDto: {
         id: 1,
         email: "email@mail.ru",

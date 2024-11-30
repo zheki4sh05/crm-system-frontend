@@ -41,6 +41,15 @@ const api={
         fetch:base.concat("/fetch"),
         upload:base.concat("/upload"),
         update:base.concat("/update")
+    },
+    workers:{
+        url:base.concat("employee"),
+        fetch:base.concat("/fetch"),
+    },
+    search:{
+        url:base.concat("/search"),
+        fetch:base.concat("")
+       
     }
 }
 

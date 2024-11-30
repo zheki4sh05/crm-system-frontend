@@ -5,20 +5,11 @@ import { useSelector } from "react-redux";
 import { getDeals } from "../app/slices/dealSlice";
 import { getDocs } from "../app/slices/documentSlice";
 import { useState } from "react";
+import { getWorkers } from "../app/slices/workersSlice";
 
 function PageInfo() {
     const location = useLocation();
 
-    
-
-    
-    const data = [
-        { name: 1, text: 'Всего' },
-        { name: 2, text: 'Всего' },
-    
-      ];
-
-  
 
     const getItemInfo=(name)=>{
 
@@ -38,6 +29,21 @@ function PageInfo() {
                 return(
 
                     <Typography >Всего: {useSelector(getDocs).length}</Typography>
+                )
+            
+            }
+            case PathConstants.WORKERS:{
+
+                return(
+
+                    <Typography >Всего: {useSelector(getWorkers).length}</Typography>
+                )
+            }
+            case PathConstants.CUSTOMER:{
+
+                return(
+                        <></>
+                    // <Typography >Всего: {useSelector(getWorkers).length}</Typography>
                 )
             
             }

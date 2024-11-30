@@ -38,7 +38,6 @@ function KanbanColumn({ deals, title, type, moveHandler,stages }) {
     setSortType(value);
   };
 
-  console.log(deals);
 
   return (
     <Box

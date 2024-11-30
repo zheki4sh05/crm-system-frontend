@@ -33,11 +33,15 @@ const bull = (
   </Box>
 );
 
-const handleUpdateAboutDeal = (newData) => {};
+const handleUpdateAboutDeal = (newData) => {
 
-const handleOrderAdd = (newOrder) => {};
+};
 
-function Deal({ type, deal, moveHandler, stages }) {
+const handleOrderAdd = (newOrder) => {
+
+};
+
+function Deal({ type, deal, moveHandler, stages, workers, activeWorker }) {
   const useApi = () => {
     return getDealPrice(deal);
   };
@@ -54,7 +58,9 @@ function Deal({ type, deal, moveHandler, stages }) {
   });
 
   const toggleDrawer = (anchor, open) => (event) => {
+   console.log("click")
     setState({ ...state, [anchor]: open });
+    console.log(state)
   };
 
   const list = (anchor) => (
@@ -64,7 +70,7 @@ function Deal({ type, deal, moveHandler, stages }) {
 
       // onClick={toggleDrawer(anchor, false)}
     >
-      <Box sx={{ ml: 2 ,width:"100%"}}>
+      <Box sx={{ ml: 2, width: "100%" }}>
         <Grid2 container spacing={2}>
           <Grid2 xs={1}>
             <Stack direction="row">
@@ -83,8 +89,8 @@ function Deal({ type, deal, moveHandler, stages }) {
           </Grid2>
           <Grid2 xs={4}></Grid2>
         </Grid2>
-        <Grid2 container spacing={1}  >
-          <Grid2 size={10} >
+        <Grid2 container spacing={1}>
+          <Grid2 size={10}>
             <CustomTabPanel
               content={{
                 tabNames: [
@@ -95,7 +101,7 @@ function Deal({ type, deal, moveHandler, stages }) {
                 ],
               }}
             >
-              <Box sx={{width:"100%"}}>
+              <Box sx={{ width: "100%" }}>
                 <AboutDeal
                   data={deal}
                   handleSubmit={handleUpdateAboutDeal}
@@ -110,23 +116,13 @@ function Deal({ type, deal, moveHandler, stages }) {
                   title="Редактирование товара"
                   getDealTotalPrice={getDealTotalPrice}
                 />
-               
               </Box>
-              <Box sx={{width:"100%"}}>
-                <DealTasks data={deal}/>
-
-                
+              <Box sx={{ width: "100%" }}>
+                <DealTasks data={deal} />
               </Box>
 
               <Box>
-
-                
-
-                <AddMoreAboutDealWrapper
-                
-                  data={deal}
-                
-                />
+                <AddMoreAboutDealWrapper data={deal} />
               </Box>
             </CustomTabPanel>
           </Grid2>
@@ -183,6 +179,66 @@ function Deal({ type, deal, moveHandler, stages }) {
       </>
     );
   };
+  const getUserDeal = (deal,toggleDrawer, workers, changeWorkerHandler,activeWorker) => {
+    return (
+      <Card variant="outlined" sx={{ mb: "10px" }}>
+        <CardContent sx={{ paddingBottom: "0px" }}>
+          <Typography
+            gutterBottom
+            sx={{ color: "text.secondary", fontSize: 14 }}
+          >
+            {deal.name}
+          </Typography>
+
+          <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
+            Цена: {getDealTotalPrice()}
+          </Typography>
+          <Typography variant="body2" gutterBottom>
+            {deal.customerDto.lastname} {deal.customerDto.name}
+            <br />
+          </Typography>
+          <Typography variant="body2" gutterBottom>
+            С {formatDateFromTimestamp(new Date(deal.started).toDateString())}
+          </Typography>
+
+          <Typography variant="body2">Задач: {deal.tasks.length}</Typography>
+        </CardContent>
+        <CardActions>
+          <MainBtn
+            text={"Открыть"}
+            config={{ size: "small" }}
+            variant={"text"}
+            btnClickHandler={toggleDrawer("right", true)}
+          />
+
+          <MainDropdown
+            title={"Исполнитель"}
+            list={workers}
+            size="small"
+            changeHandler={changeWorkerHandler}
+            defaultIndex={workers.indexOf(
+              workers.filter((item) => item.id == activeWorker.id)[0]
+            )}
+          />
+        </CardActions>
+      </Card>
+    );
+  };
+
+  const getDrawer=()=>{
+    return (
+
+      <Drawer
+          anchor={"right"}
+          open={state["right"]}
+          onClose={toggleDrawer("right", false)}
+          sx={{ zIndex: 10000 }}
+        >
+          {list("right")}
+        </Drawer>
+
+    )
+  }
 
   if (type == "kanban") {
     return (
@@ -192,16 +248,15 @@ function Deal({ type, deal, moveHandler, stages }) {
             {getKanbanCard(deal, toggleDrawer, moveHandler, stages)}
           </Card>
         </Box>
-        <Drawer
-          anchor={"right"}
-          open={state["right"]}
-          onClose={toggleDrawer("right", false)}
-          sx={{ zIndex: 10000 }}
-        >
-          {list("right")}
-        </Drawer>
+        {getDrawer()}
       </>
     );
+  } else if (type == "overview") {
+    return <>
+    {getUserDeal(deal,toggleDrawer, workers, moveHandler,activeWorker)}
+    {getDrawer()}
+    
+    </>;
   }
 }
 

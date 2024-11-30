@@ -28,10 +28,6 @@ function App() {
           element: <Deals />,
         },
         {
-          path: PathConstants.TASKS,
-          element: <Tasks />,
-        },
-        {
           path: PathConstants.DOCS,
           element: <Docs />,
         },

@@ -18,6 +18,9 @@ export function getPageNameByPath(path){
         case PathConstants.DOCS:{
              return "Документы"
         }
+        case PathConstants.WORKERS:{
+            return "Сотрудники"
+       }
     }
 }
 

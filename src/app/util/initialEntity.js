@@ -64,6 +64,17 @@ export function initDocument(){
     format:""
   }
 }
+
+export function initWorker(){
+  return {
+    id:0,
+    name:"",
+    lastname:"",
+    surname:"",
+    email:"",
+    phone:""
+  }
+}
 // export function initCustomerDto(){
 //     return {
         
