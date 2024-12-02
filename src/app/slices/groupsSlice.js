@@ -1,5 +1,6 @@
 import api from "../constants/apipath";
 import DomainNames from "../constants/DomainNames";
+import statusTypes from "../constants/statusTypes";
 import ApiRequestCreator from "../util/requestFactory";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -52,7 +53,13 @@ export const fetchGroups = apiFactory.createGetRequest(
 const groupSlice = createSlice({
   name: DomainNames.groups,
   initialState,
-  reducers: {},
+  reducers: {
+
+    resetGroupsStatus(state, action){
+      state.status = statusTypes.idle
+    }
+
+  },
   extraReducers(builder) {
     builder
       //---создание группы-------------
@@ -119,5 +126,5 @@ export function getGroupsStatus(state) {
 export function getGroupsError(state) {
   return state[DomainNames.groups].error;
 }
-
+export const { resetGroupsStatus } = groupSlice.actions
 export default groupSlice.reducer;

@@ -1,5 +1,6 @@
 import api from "../constants/apipath";
 import DomainNames from "../constants/DomainNames";
+import statusTypes from "../constants/statusTypes";
 import ApiRequestCreator from "../util/requestFactory";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -52,7 +53,13 @@ export const fetchStages = apiFactory.createGetRequest(
 const stageSlice = createSlice({
   name: DomainNames.stages,
   initialState,
-  reducers: {},
+  reducers: {
+
+    resetStagessStatus(state,action){
+      state.status = statusTypes.idle
+    }
+
+  },
   extraReducers(builder) {
     builder
       //---создание стадии-------------
@@ -119,5 +126,7 @@ export function getStagesStatus(state) {
 export function getStagesError(state) {
   return state[DomainNames.stages].error;
 }
+
+export const {resetStagessStatus} = stageSlice.actions
 
 export default stageSlice.reducer;

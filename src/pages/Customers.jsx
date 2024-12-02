@@ -12,13 +12,7 @@ function Customers() {
     useEffect(() => {
       console.log("Загрузка");
     }, []);
-  
-    
-  
-    
-  
-  
-  
+
     return (
       <DialogEntityProvider>
         <Box

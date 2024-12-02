@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, LinearProgress, Typography } from "@mui/material";
 import SearchSection from "../widgets/SearchSection";
 import PageInfo from "../features/PageInfo";
 import MainDropdown from "../shared/MainDropdown";
@@ -8,19 +8,33 @@ import kanban from "./../features/kanban/api/types";
 import DialogEntityProvider from "../processes/contextProvider/api/DialogEntityProvider";
 import CreateDial from "../widgets/CreatDeal/CreateDeal";
 import CustomStepper from "./../features/CustomStepper";
-import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useState } from "react";
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchDeal, getDeals, getDealsStatus } from "../app/slices/dealSlice";
+import {
+  fetchDeal,
+  getDeals,
+  getDealsStatus,
+  resetDealStatus,
+} from "../app/slices/dealSlice";
 import statusTypes from "../app/constants/statusTypes";
 import {
   fetchGroups,
   getGroups,
   getGroupsStatus,
+  resetGroupsStatus,
 } from "../app/slices/groupsSlice";
 import {
   fetchStages,
   getStages,
   getStagesStatus,
+  resetStagessStatus,
 } from "../app/slices/stagesSlice";
 
 import ModalWindow from "../features/modal/ModalWindow";
@@ -31,62 +45,50 @@ import StagesControlBody from "../widgets/modal/StagesControlBody";
 import PathConstants from "../shared/pathConstants";
 
 function Deals() {
+  const dispatch = useDispatch();
   const groups = useSelector(getGroups);
+  const stages = useSelector(getStages);
+  const deals = useSelector(getDeals);
+  let groupsStatus = useSelector(getGroupsStatus);
+  let stagesStatus = useSelector(getStagesStatus);
+  let dealsStatus = useSelector(getDealsStatus);
+  let company = useSelector(getCompany);
+  function makeRequest() {
+      dispatch(fetchGroups({ companyId: company.id }));
+    
+    dispatch(fetchStages({ companyId: company.id }));
 
+    dispatch(fetchDeal());
+  }
   useEffect(() => {
-    console.log("Загрузка");
+    makeRequest();
   }, []);
+
 
   const initGroup = (items) => {
     if (items.length > 0) {
       return items[0].id;
     } else {
-      return  0 ;
+      return 0;
     }
   };
 
-  const getStagesByGroup = ()=>{
-    return useSelector(getStages).filter((item) => {
+  const getStagesByGroup = () => {
+    return stages.filter((item) => {
       return item.groupId == activeGroup;
     });
-  }
+  };
 
-  const deals = useSelector(getDeals)
+
 
   const [activeGroup, setActiveGroup] = useState(initGroup(groups));
 
   // const [deals,setDeals] = useState(useSelector(getDeals))
 
-
   const handleChangeGroup = (id) => {
     setActiveGroup(groups.filter((item) => item.id === id)[0].id);
   };
-  
-  const dispatch = useDispatch();
 
-  let company = useSelector(getCompany);
-
-  let groupsStatus = useSelector(getGroupsStatus);
-  let stagesStatus = useSelector(getStagesStatus);
-  let dealsStatus = useSelector(getDealsStatus);
-
-  function makeRequest() {}
-
-  //do not delete
-  // useEffect(()=>{
-
-  //   if(groupsStatus===statusTypes.idle){
-
-  //     dispatch(fetchGroups({companyId:company.id}))
-
-  //   }
-  //   if(stagesStatus===statusTypes.idle){
-  //     dispatch(fetchStages({companyId:company.id}))
-  //   }
-
-  //   dispatch(fetchDeal())
-
-  // }, [])
 
 
 
@@ -109,7 +111,7 @@ function Deals() {
           }}
         >
           <Box sx={{ flex: 1 / 2 }}>
-            <SearchSection type={PathConstants.DEALS} >
+            <SearchSection type={PathConstants.DEALS}>
               <CustomStepper buttonText={"Создать"} />
             </SearchSection>
           </Box>
@@ -134,8 +136,7 @@ function Deals() {
               <Box sx={{ display: "flex", justifyContent: "start" }}>
                 <Typography
                   variant="caption"
-                  sx={{ display: "block",mb:"6px" }}
-                  
+                  sx={{ display: "block", mb: "6px" }}
                 >
                   Управление
                 </Typography>
@@ -162,8 +163,7 @@ function Deals() {
             <Box>
               <Typography
                 variant="caption"
-                sx={{ display: "block",mb:"6px" }}
-               
+                sx={{ display: "block", mb: "6px" }}
               >
                 Метрики воронки
               </Typography>
@@ -178,12 +178,22 @@ function Deals() {
         </Box>
 
         <Box sx={{ width: "100%", marginTop: "10px", height: "auto" }}>
-          <Kanban type={kanban.deal} stages={getStagesByGroup()} deals={deals} />
+          {groupsStatus == statusTypes.loading ||
+          stagesStatus == statusTypes.loading ||
+          dealsStatus == statusTypes.loading ? (
+            <LinearProgress />
+          ) : (
+            <Kanban
+              type={kanban.deal}
+              stages={getStagesByGroup()}
+              deals={deals}
+            />
+          )}
         </Box>
       </Box>
       <CreateDial reloadHandler={makeRequest} />
     </DialogEntityProvider>
   );
-};
+}
 
 export default Deals;

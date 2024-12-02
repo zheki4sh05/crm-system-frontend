@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import api from "../constants/apipath";
 import DomainNames from "../constants/DomainNames";
 import ApiRequestCreator from "../util/requestFactory";
+import statusTypes from "../constants/statusTypes";
 
 //----state---
 const initialState = {
@@ -127,6 +128,9 @@ const dealSlice = createSlice({
         existing.stageId = stageId
       }
 
+    },
+    resetDealStatus(state,action){
+      state.status = statusTypes.idle
     }
 
 
@@ -170,5 +174,5 @@ export function getDealsById(state){
   
 }
 
-export const { controlSearchStage,setSearcResult,clearSearchedDeals, updateDealAction } = dealSlice.actions
+export const { controlSearchStage,setSearcResult,clearSearchedDeals, updateDealAction,resetDealStatus } = dealSlice.actions
 export default dealSlice.reducer;
