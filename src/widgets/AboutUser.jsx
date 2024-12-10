@@ -8,16 +8,12 @@ import Box from "@mui/material/Box";
 
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useSelector } from "react-redux";
+import { getUserData } from "../app/slices/appUserSlice";
+
 function AboutUser() {
 
-    const user = {
-        name:"имя",
-        surname:"",
-        lastname:"",
-        email:"",
-        phone:"",
-
-    }
+    const user = useSelector(getUserData)
 
     const handleSubmit = (event) => {
        

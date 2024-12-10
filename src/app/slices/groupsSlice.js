@@ -4,25 +4,27 @@ import statusTypes from "../constants/statusTypes";
 import ApiRequestCreator from "../util/requestFactory";
 import { createSlice } from "@reduxjs/toolkit";
 
+// {
+//   id: 1,
+//   name: "B2C",
+//   description: "Описание B2C",
+//   companyId: 1,
+//   type: "B2C",
+//   isActive:true
+// },
+// {
+//   id: 2,
+//   name: "B2B",
+//   description: "Описание B2B",
+//   companyId: 1,
+//   type: "B2B",
+//   isActive:true
+// },
+
 //----state---
 const initialState = {
   groups: [
-    {
-      id: 1,
-      name: "B2C",
-      description: "Описание B2C",
-      companyId: 1,
-      type: "B2C",
-      isActive:true
-    },
-    {
-      id: 2,
-      name: "B2B",
-      description: "Описание B2B",
-      companyId: 1,
-      type: "B2B",
-      isActive:true
-    },
+    
   ],
   status: "idle",
   error: null,
@@ -44,10 +46,7 @@ export const updateGroup = apiFactory.createPatchRequest(api.groups.update);
 //----------------------
 
 //---fetch---
-export const fetchGroups = apiFactory.createGetRequest(
-  api.groups.fetchAll,
-  true
-);
+export const fetchGroups = apiFactory.createGetRequest( api.groups.fetchAll,true);
 //----------------------
 
 const groupSlice = createSlice({
@@ -57,6 +56,9 @@ const groupSlice = createSlice({
 
     resetGroupsStatus(state, action){
       state.status = statusTypes.idle
+    },
+    constrolGroupsStatus(state,action){
+      state.status = action.payload
     }
 
   },
@@ -69,7 +71,7 @@ const groupSlice = createSlice({
       .addCase(createGroup.fulfilled, (state, action) => {
         state.status = "succeeded";
 
-        state.deals.push({ ...action.payload });
+        state.groups.push({ ...action.payload });
       })
       .addCase(createGroup.rejected, (state, action) => {
         state.status = "failed";
@@ -84,7 +86,7 @@ const groupSlice = createSlice({
       .addCase(fetchGroups.fulfilled, (state, action) => {
         state.status = "succeeded";
 
-        state.groups.push({ ...action.payload });
+        state.groups = action.payload
       })
       .addCase(fetchGroups.rejected, (state, action) => {
         state.status = "failed";
@@ -126,5 +128,5 @@ export function getGroupsStatus(state) {
 export function getGroupsError(state) {
   return state[DomainNames.groups].error;
 }
-export const { resetGroupsStatus } = groupSlice.actions
+export const { resetGroupsStatus,constrolGroupsStatus } = groupSlice.actions
 export default groupSlice.reducer;

@@ -4,26 +4,52 @@ import AddMoreAboutDeal from "./AddMoreAboutDeal";
 import CreateEntity from "../../features/CreateEntity";
 import DialogContext from "../../processes/contextProvider/DialogContext";
 import {initDeal, initMoreAboutDeal } from "../../app/util/initialEntity";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getGroups } from "../../app/slices/groupsSlice";
 import { getStages } from "../../app/slices/stagesSlice";
+import { createDeal } from "../../app/slices/dealSlice";
+import { getToken } from "../../app/slices/appUserSlice";
 
 const CreateDial = memo(({ reloadHandler }) => {
 
+  const dispatch = useDispatch()
+  const token = useSelector(getToken)
   const groups = useSelector(getGroups)
   const stages = useSelector(getStages)
 
-  const { data, getDialogResult, resetDialogContext, setDataHandler } =
-    useContext(DialogContext);
+  const { data, getDialogResult, resetDialogContext, setDataHandler } = useContext(DialogContext);
 
   const handleSaveUploadedDoc = () => {
-    const formData = new FormData();
+    console.log(data)
+    dispatch(createDeal(
+
+        {
+          data:   {
+            customerDto:{
+              email:data.aboutDeal.customerDto.email,
+              name:data.aboutDeal.customerDto.clientName,
+              phone:data.aboutDeal.customerDto.email,
+            },
+            name:data.aboutDeal.customerDto.name,
+            description:data.aboutDeal.customerDto.description,
+            groupId:data.moreDeal.group,
+            source:data.moreDeal.source,
+            stageId:data.moreDeal.stage,
+            type:data.moreDeal.type
+          },
+          token:token
+        }
+
+   
+    ))
+
+
   };
 
   const handleSubmitAboutDeal = (newData) => {
     setDataHandler({
       ...data,
-      aboutDeal: { ...newData },
+      aboutDeal: {customerDto:{ ...newData} },
     });
   };
 

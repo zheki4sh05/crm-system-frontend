@@ -1,117 +1,101 @@
-import { Box, Button, Divider, Grid2, Typography } from "@mui/material";
+import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { controlCompanyStatus, createCompany, generateKey, getCompany, getCompanyStatus, updateCompany } from "../../app/slices/companySlice";
+import { getToken } from "../../app/slices/appUserSlice";
+import statusTypes from "../../app/constants/statusTypes";
 
-import CreateCompany from "./CreateCompany.jsx";
 
 
-import MainBtn from "../../shared/MainBtn";
-import { useState } from "react";
-import CompanyInformation from "./CompanyInformation.jsx";
+
+
+
+
 function AboutCompany() {
 
-  const [open,setOpen] = useState(false);
+  const dispatch = useDispatch()
 
-  const handleOpenTabsAboutCompany=()=>{
-    setOpen((prevState) => (prevState === false ? true : false));
+  const company = useSelector(getCompany)
+  const companyStatus = useSelector(getCompanyStatus)
+
+  const token = useSelector(getToken)
+
+  const exist = Object.keys(company).length>0
+
+  const [edit,setEdit] = useState(false)
+  const [name,setName] = useState(company.name) 
+  const [desc,setDescription] = useState(company.description) 
+
+  const handleCreate=()=>{
+    dispatch(createCompany({name,description:desc}))
   }
- 
+
+  const handleUpdate=()=>{
+    dispatch(updateCompany(
+      {
+        token:token,
+        data:{id:company.id, name:name,description:desc}
+      }
+      
+      ))
+  }
+
+  useEffect(()=>{
+
+    if(companyStatus==statusTypes.succeeded){
+      dispatch(controlCompanyStatus(statusTypes.idle))
+      setEdit(false)
+    }
+
+  },[companyStatus])
+
+  const handleGenerate=()=>{
+      dispatch(generateKey({
+        data:{
+          companyId:company.id
+        },
+        token
+      }))
+  }
+
   return (
-    <Box>
-      <Grid2 container spacing={1}>
-        <Grid2 item xs={7}>
-          <Typography variant="subtitle1" gutterBottom>
-            Ваше место работы:
-          </Typography>
-          <Box sx={{ mb: 1 }}>
-            {userInCompany.name == "" ? (
-              <Typography>Вы ни где не работаете</Typography>
-            ) : (
-              <>
-              
-                <Typography variant="h4" gutterBottom>
-                  {userInCompany.name}
-                </Typography>{" "}
-                <MainBtn size="small" sx={{ mr: 1 }} variant="outlined" btnClickHandler={handleOpenTabsAboutCompany} text= {open ? "Скрыть" : "Подробнее"} />
+    <Stack direction={"column"}>
+ <Box sx={{display:"flex",flexDirection:"row",gap:"20px"}} >
 
-                 
-               
-              </>
-            )}
-          </Box>
+<TextField value={name} id="outlined-basic" label="Название" variant="outlined" onChange={(event)=>{setEdit(true);  setName(event.target.value)}} />
+<TextField value={desc} id="outlined-basic2" label="Описание" variant="outlined" onChange={(event)=>{setEdit(true); setDescription(event.target.value)}} />
 
-          <Divider textAlign="right"></Divider>
-          {isWorked ? (
-            <>
-              <Box sx={{ mt: 2 }}>
-                <Typography variant="subtitle1" gutterBottom>
-                  Ваша роль:
-                </Typography>
-                <Typography variant="subtitle1" gutterBottom>
-                  {userInCompany.currentRole == "admin"
-                    ? "Администратор"
-                    : "Менеджер"}
-                </Typography>
-              </Box>
-              <Divider textAlign="right"></Divider>
+{
+  exist ? 
+  <Button variant="contained" onClick={handleUpdate} disabled={!edit} >Обновить</Button>
 
-              {
-                  isCreared ? 
-                  <CustomCreateAlert
-                
-                  messageText="Вы успешно создали компанию!"
-                  duration={6000}
-                  userSeverity="success"
+  :
+  <Button variant="contained" onClick={handleCreate} disabled={name.trim().length==0} >Создать</Button>
 
-                  /> :
-                  <></>
-                }{
-                  fetchingResult
-                }
+}
 
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "row",
-                  height: "100%",
-                  alignItems: "flex-end",
-                }}
-              >
-                
 
-               
-                {userInCompany.currentRole == "admin" ?
-                    <Button variant="outlined" size="small" color="error" onClick={handleDeligateCompany}>
-                    Передать компанию
-                    </Button> :
-                     <Button variant="outlined" size="small" color="error" onClicl={handleRetireFromCompany} >
-                     Уволиться
-                   </Button>
-                }
-               
-              </Box>
-            </>
-          ) : (
-            <Box sx={{ mt: 1 }}>
-              <CreateCompany handleCreate={handleWork} />
-            </Box>
-          )}
-        </Grid2>
-        <Grid2 item xs={5}>
-          {
-            open ? 
-    
-            <CompanyInformation/>
-              :
-              null
-          }
-         
+</Box>
 
-        </Grid2>
-      </Grid2>
-      <Grid2 container spacing={1}>
-        <Grid2 item xs={4}></Grid2>
-      </Grid2>
- 
-    </Box>
+<Stack direction={"row"} sx={{gap:"20px",marginTop:"10px"}}>
+  <Typography sx={{
+
+maxWidth: '300px', // фиксированная ширина
+wordBreak: 'break-word'
+
+
+
+  }} >
+
+    {company.apiKey}
+
+  </Typography>
+      <Button onClick={handleGenerate} >Сгенерировать</Button>
+      
+</Stack>
+
+    </Stack>
+   
   );
 }
 

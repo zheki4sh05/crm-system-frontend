@@ -1,5 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import getRequestConfig from "./requestConfig";
+import addParams from "./addParams";
 
 
 class ApiRequestCreator{
@@ -16,13 +18,13 @@ class ApiRequestCreator{
         if(withParms){
 
               return  createAsyncThunk(this.domainName.concat(uri)  , async (initial) => {
-                const response = await axios.get(fullUrl.concat(addParams(initialUser.data)),  initial);
+                const response = await axios.get(fullUrl.concat(addParams(initial.data)),  getRequestConfig(initial.token));
                   return response.data
             })
 
         }else{
             return  createAsyncThunk(this.domainName.concat(uri)  , async (initial) => {
-                const response = await axios.get(fullUrl,  initial);
+                const response = await axios.get(fullUrl,  getRequestConfig(initial.token));
                   return response.data
             })
         }
@@ -32,7 +34,7 @@ class ApiRequestCreator{
     createPostRequest(uri){
 
         return  createAsyncThunk(this.domainName.concat(uri)  , async (initial) => {
-            const response = await axios.post(this.url.concat(uri),initial.data,initial);
+            const response = await axios.post(this.url.concat(uri),initial.data,getRequestConfig(initial.token));
               return response.data
         })
     
@@ -45,7 +47,7 @@ class ApiRequestCreator{
     
     createPatchRequest(uri){
       return  createAsyncThunk(this.domainName.concat(uri)  , async (initial) => {
-        const response = await axios.patch(this.url.concat(uri),initial.data,initial);
+        const response = await axios.patch(this.url.concat(uri),initial.data,getRequestConfig(initial.token));
           return response.data
     })
     }

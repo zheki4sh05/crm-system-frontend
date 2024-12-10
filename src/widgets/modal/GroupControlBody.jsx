@@ -47,9 +47,10 @@ const handleClick=()=>{
     
 
  handleSave({
-        ...item, name, desc, isActive:isSwitched
+        ...item, name, description:desc, isActive:isSwitched
     })
 }
+
 
     const label = { inputProps: { 'aria-label': 'Color switch demo' } };
     return ( <Box sx={{width:"200px"}} >

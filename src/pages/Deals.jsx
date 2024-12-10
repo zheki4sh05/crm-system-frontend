@@ -47,6 +47,8 @@ import PathConstants from "../shared/pathConstants";
 function Deals() {
   const dispatch = useDispatch();
   const groups = useSelector(getGroups);
+  const [activeGroup, setActiveGroup] = useState(groups.length > 0 ? groups[0].id : 0);
+  console.log(groups)
   const stages = useSelector(getStages);
   const deals = useSelector(getDeals);
   let groupsStatus = useSelector(getGroupsStatus);
@@ -54,15 +56,13 @@ function Deals() {
   let dealsStatus = useSelector(getDealsStatus);
   let company = useSelector(getCompany);
   function makeRequest() {
-      dispatch(fetchGroups({ companyId: company.id }));
+    //   dispatch(fetchGroups({ companyId: company.id }));
     
-    dispatch(fetchStages({ companyId: company.id }));
+    // dispatch(fetchStages({ companyId: company.id }));
 
-    dispatch(fetchDeal());
+    // dispatch(fetchDeal());
   }
-  useEffect(() => {
-    makeRequest();
-  }, []);
+
 
 
   const initGroup = (items) => {
@@ -81,7 +81,7 @@ function Deals() {
 
 
 
-  const [activeGroup, setActiveGroup] = useState(initGroup(groups));
+  
 
   // const [deals,setDeals] = useState(useSelector(getDeals))
 
@@ -89,7 +89,7 @@ function Deals() {
     setActiveGroup(groups.filter((item) => item.id === id)[0].id);
   };
 
-
+  console.log(activeGroup)
 
 
   return (
@@ -125,11 +125,19 @@ function Deals() {
             }}
           >
             <Box>
-              <MainDropdown
-                title={"Группа"}
-                list={groups}
-                changeHandler={handleChangeGroup}
-              />
+              {
+                  groups.length>0 ? 
+
+                  <MainDropdown
+                  title={"Группа"}
+                  list={groups}
+                  changeHandler={handleChangeGroup}
+                />
+                :
+                <Typography>Необходимо создать группу</Typography>
+
+              }
+             
             </Box>
 
             <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -156,7 +164,7 @@ function Deals() {
                   btnText={"Стадии"}
                   handleSaveAction={() => {}}
                 >
-                  <StagesControlBody stages={getStagesByGroup()} />
+                  <StagesControlBody stages={getStagesByGroup()} activeGroup={activeGroup}/>
                 </ModalWindow>
               </Box>
             </Box>
@@ -191,7 +199,13 @@ function Deals() {
           )}
         </Box>
       </Box>
+      {stages.length !=0 && groups.length!=0 ?
       <CreateDial reloadHandler={makeRequest} />
+      :
+      null
+    
+    }
+      
     </DialogEntityProvider>
   );
 }

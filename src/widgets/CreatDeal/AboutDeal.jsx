@@ -11,7 +11,7 @@ function AboutDeal({
   
 }) {
  
-
+console.log(data)
   // const groups = useSelector(getGroups);
 
   const [change, setChange] = useState(false);
@@ -130,18 +130,7 @@ function AboutDeal({
   };
 
   const handleFormSubmit = () => {
-    // setDataHandler({
-    //   ...data,
-    //   aboutDeal: {
-    //     name: name,
-    //     description: desc,
-    //     group: group,
-    //     stage: stage,
-    //     clientName: clientName,
-    //     email: email,
-    //     phone: phone,
-    //   },
-    // });
+
 
     handleSubmit({
       name: name,

@@ -4,25 +4,27 @@ import statusTypes from "../constants/statusTypes";
 import ApiRequestCreator from "../util/requestFactory";
 import { createSlice } from "@reduxjs/toolkit";
 
+// {
+//   id: 1,
+//   name: "Стадия 1",
+//   description: "Описание стадии 1",
+//   companyId: 1,
+//   groupId: 1,
+//   order: 1,
+// },
+// {
+//   id: 2,
+//   name: "Стадия 2",
+//   description: "Описание стадии 2",
+//   companyId: 1,
+//   groupId: 1,
+//   order: 2,
+// },
+
 //----state---
 const initialState = {
   stages: [
-    {
-      id: 1,
-      name: "Стадия 1",
-      description: "Описание стадии 1",
-      companyId: 1,
-      groupId: 1,
-      order: 1,
-    },
-    {
-      id: 2,
-      name: "Стадия 2",
-      description: "Описание стадии 2",
-      companyId: 1,
-      groupId: 1,
-      order: 2,
-    },
+    
   ],
   status: "idle",
   error: null,
@@ -57,6 +59,9 @@ const stageSlice = createSlice({
 
     resetStagessStatus(state,action){
       state.status = statusTypes.idle
+    },
+    controlStageStatus(state,action){
+      state.status = action.payload
     }
 
   },
@@ -84,7 +89,7 @@ const stageSlice = createSlice({
       .addCase(fetchStages.fulfilled, (state, action) => {
         state.status = "succeeded";
 
-        state.stages = [...action.payload];
+        state.stages = action.payload;
       })
       .addCase(fetchStages.rejected, (state, action) => {
         state.status = "failed";
@@ -127,6 +132,6 @@ export function getStagesError(state) {
   return state[DomainNames.stages].error;
 }
 
-export const {resetStagessStatus} = stageSlice.actions
+export const {resetStagessStatus,controlStageStatus} = stageSlice.actions
 
 export default stageSlice.reducer;

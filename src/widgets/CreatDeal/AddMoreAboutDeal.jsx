@@ -58,7 +58,12 @@ function AddMoreAboutDeal({
     setGroup(value);
 
     if(stage==0){
-      setStage(getStagesByGroup(value)[0].id)
+      if(value==0){
+        setStage(0)
+      }else{
+        setStage(getStagesByGroup(value)[0].id)
+      }
+     
     }
 
   };
@@ -86,13 +91,19 @@ function AddMoreAboutDeal({
   };
 
   const getStagesByGroup = (value) => {
+    console.log(value)
+    if(value==0){
+      return []
+    }
     return stages.filter((item) => item.groupId == value);
   };
 
   const getGroupsByDealType = (type) => {
-    return groups.filter((item) => item.type == type);
+   
+    return groups.filter((item) => item.customerType == type);
   };
 
+  
   return (
     <Box sx={{ mt: 5 }}>
       <Container maxWidth="sm">

@@ -1,12 +1,29 @@
 import { Box, List, ListItem, Typography } from "@mui/material";
 import ModalWindow from "../../features/modal/ModalWindow";
 import StageControlBody from "./StageControlBody";
+import { useDispatch, useSelector } from "react-redux";
+import { createStage } from "../../app/slices/stagesSlice";
+import { getToken } from "../../app/slices/appUserSlice";
+import { getCompany } from "../../app/slices/companySlice";
 
-function StagesControlBody({ stages }) {
+function StagesControlBody({ stages,activeGroup }) {
+  const token=  useSelector(getToken)
+  const company = useSelector(getCompany)
+  const dispatch = useDispatch()
   const handleSave = (item) => {
+    dispatch(createStage({
+      data:{
+        name: item.name,
+        description:item.description,
+        companyId:company.id,
+        groupId:activeGroup
+
+      },
+      token:token
+    }))
     console.log(item);
   };
-
+  
   const handleEdit=(item)=>{
 
   }

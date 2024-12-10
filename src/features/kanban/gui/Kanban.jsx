@@ -6,6 +6,9 @@ import { useDispatch } from "react-redux";
 
 
 function Kanban({type,deals, stages}) {
+
+    console.log(deals)
+    console.log(stages)
     
     const dispatch = useDispatch()
 

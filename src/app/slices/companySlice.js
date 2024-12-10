@@ -5,7 +5,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 //----state---
 const initialState = {
-    company:{},
+    company:{
+      id:0,
+      name:"",
+      description:"",
+      key:""
+    },
     status:'idle',
     error:null
 }
@@ -27,8 +32,13 @@ const initialState = {
     //----------------------
 
     //---fetch---
-    export  const fetchCompany = apiFactory.createPatchRequest(api.company.fetch)
+    export  const fetchCompany = apiFactory.createGetRequest(api.company.fetch, false)
     //----------------------
+
+       //---generate---
+       const apiFactory2 = new ApiRequestCreator(DomainNames.key, api.api.url);
+       export  const generateKey = apiFactory2.createPostRequest(api.api.generate)
+       //----------------------
 
 
 
@@ -37,6 +47,9 @@ const companySlice = createSlice({
     name: DomainNames.company,
     initialState,
     reducers: {      
+      controlCompanyStatus(state,action){
+        state.status = action.payload
+      }
     },
     extraReducers(builder) {
       builder
@@ -65,7 +78,7 @@ const companySlice = createSlice({
             state.status = 'succeeded';
     
             state.company = action.payload
-    
+
             
             })
             .addCase(fetchCompany.rejected, (state, action) => {
@@ -90,6 +103,23 @@ const companySlice = createSlice({
             state.error = action.error.message
             })
             //----------------------------------------
+               
+            //---генерация ключа-------------
+            .addCase(generateKey.pending, (state, action) => {
+    
+              state.status = 'loading'
+              })
+              .addCase(generateKey.fulfilled, (state, action) => {
+              state.status = 'succeeded';
+           
+              state.company.key = action.payload        
+              
+              })
+              .addCase(generateKey.rejected, (state, action) => {
+              state.status = 'failed';
+              state.error = action.error.message
+              })
+              //----------------------------------------
       }
   })
 
@@ -104,7 +134,7 @@ export function getCompanyStatus(state){
   export function getCompanyError(state){
     return state[DomainNames.company].error
   }
-
+  export const { controlCompanyStatus} = companySlice.actions
 
   export default companySlice.reducer
 

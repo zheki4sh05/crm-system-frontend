@@ -4,6 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import CustomTabPanel from "../widgets/CustomTabPanel";
 import AboutUser from "../widgets/AboutUser";
+import AboutCompany from "../widgets/company/AboutCompany";
 function UserProfile() {
     const [state, setState] = useState({
       top: false,
@@ -56,9 +57,9 @@ function UserProfile() {
                       <AboutUser/>
                   </Box>
                   <Box>
-                      {/* <AboutCompany/> */}
+                      <AboutCompany/>
 
-                      <div>гыгыгы</div>
+                      
                   </Box>
                 
   

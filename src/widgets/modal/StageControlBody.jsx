@@ -44,7 +44,7 @@ const handleClick=()=>{
     
 
  handleSave({
-        ...item, name, desc
+        ...item, name, description:desc
     })
 }
 

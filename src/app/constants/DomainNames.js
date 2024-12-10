@@ -9,7 +9,8 @@ const DomainNames = {
     type:"type",
     documents:'documents',
     search:'search',
-    workers:'workers'
+    workers:'workers',
+    key:"key"
 
 }
 export default DomainNames;

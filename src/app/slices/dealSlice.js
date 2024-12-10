@@ -4,76 +4,79 @@ import DomainNames from "../constants/DomainNames";
 import ApiRequestCreator from "../util/requestFactory";
 import statusTypes from "../constants/statusTypes";
 
+// {
+//   id: 1,
+//   name: "Сделка 1",
+//   description: "Описание",
+//   stageId: 1,
+//   started: 1636647992345,
+//   organizationName:"",
+//   worker:1,
+//   customerDto: {
+//     id: 1,
+//     email: "email@mail.ru",
+//     surname:"Отчество",
+//     name: "Иван",
+//     lastname: "Сидоров",
+//     address: "пр-т Пушкина 20",
+//      phone:"+37534923981"
+//   },
+//   orderList: [
+//     {
+//       id: 1,
+//       name: "Товар",
+//       count: 10,
+//       code: "093576908567",
+//       dealId: 1,
+//       price: 10.5,
+//     },
+//   ],
+//   tasks:[{
+
+//     id:1,
+//     name:"Новая задача",
+//     deal:1,
+//     worker:1,
+//     is_done:false,
+//     start:1636647992345,
+//     finishAt:1636647992400,
+
+//   }]
+// },
+// {
+//   id: 2,
+//   name: "Сделка 2",
+//   description: "Описание",
+//   stageId: 1,
+//   started: 1636647992345,
+//   organizationName:"",
+//   customerDto: {
+//     id: 1,
+//     email: "email@mail.ru",
+//     name: "Иван",
+//     lastname: "Сидоров",
+//     surname:"Отчество",
+//     address: "пр-т Пушкина 20",
+//     phone:"+37534923981"
+//   },
+//   orderList: [
+//     {
+//       id: 1,
+//       name: "Товар",
+//       count: 20,
+//       code: "093576908567",
+//       dealId: 1,
+//       price: 10.5,
+//     },
+//   ],
+//   tasks:[]
+// },
+
+
 //----state---
 const initialState = {
   deals: [
-    {
-      id: 1,
-      name: "Сделка 1",
-      description: "Описание",
-      stageId: 1,
-      started: 1636647992345,
-      organizationName:"",
-      worker:1,
-      customerDto: {
-        id: 1,
-        email: "email@mail.ru",
-        surname:"Отчество",
-        name: "Иван",
-        lastname: "Сидоров",
-        address: "пр-т Пушкина 20",
-         phone:"+37534923981"
-      },
-      orderList: [
-        {
-          id: 1,
-          name: "Товар",
-          count: 10,
-          code: "093576908567",
-          dealId: 1,
-          price: 10.5,
-        },
-      ],
-      tasks:[{
-
-        id:1,
-        name:"Новая задача",
-        deal:1,
-        worker:1,
-        is_done:false,
-        start:1636647992345,
-        finishAt:1636647992400,
-
-      }]
-    },
-    {
-      id: 2,
-      name: "Сделка 2",
-      description: "Описание",
-      stageId: 1,
-      started: 1636647992345,
-      organizationName:"",
-      customerDto: {
-        id: 1,
-        email: "email@mail.ru",
-        name: "Иван",
-        lastname: "Сидоров",
-        surname:"Отчество",
-        address: "пр-т Пушкина 20",
-        phone:"+37534923981"
-      },
-      orderList: [
-        {
-          id: 1,
-          name: "Товар",
-          count: 20,
-          code: "093576908567",
-          dealId: 1,
-          price: 10.5,
-        },
-      ],
-      tasks:[]
-    },
+    
   ],
 
   searchedDeals:[],
@@ -131,6 +134,9 @@ const dealSlice = createSlice({
     },
     resetDealStatus(state,action){
       state.status = statusTypes.idle
+    },
+    manageDealStatus(state,action){
+      state.status = action.payload
     }
 
 
@@ -145,13 +151,28 @@ const dealSlice = createSlice({
       .addCase(createDeal.fulfilled, (state, action) => {
         state.status = "succeeded";
 
-        state.deals.push({ ...action.payload });
+       
+        state.deals.push(action.payload)
       })
       .addCase(createDeal.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.error.message;
-      });
+      })
     //----------------------------------------
+          //---создание сделки-------------
+          .addCase(fetchDeal.pending, (state, action) => {
+            state.status = "loading";
+          })
+          .addCase(fetchDeal.fulfilled, (state, action) => {
+            state.status = "succeeded";
+    
+            state.deals = action.payload
+          })
+          .addCase(fetchDeal.rejected, (state, action) => {
+            state.status = "failed";
+            state.error = action.error.message;
+          });
+        //----------------------------------------
   },
 });
 
@@ -174,5 +195,5 @@ export function getDealsById(state){
   
 }
 
-export const { controlSearchStage,setSearcResult,clearSearchedDeals, updateDealAction,resetDealStatus } = dealSlice.actions
+export const { controlSearchStage,setSearcResult,clearSearchedDeals, updateDealAction,resetDealStatus,manageDealStatus } = dealSlice.actions
 export default dealSlice.reducer;

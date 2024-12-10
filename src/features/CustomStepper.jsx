@@ -6,7 +6,8 @@ function CustomStepper({ buttonText }) {
 
     const { openDialogHandler } = useContext(DialogContext);
 
-    return ( <MainBtn
+    return ( 
+    <MainBtn
             type={"btn"}
             
             text={buttonText}

@@ -30,7 +30,7 @@ const api={
     stages:{
         url:base.concat("stage"),
         create:"/create",
-        fetchAll:"/fetch"
+        fetchAll:"/fetchAll"
     },
     stats:{
         url:base.concat("stage"),
@@ -48,8 +48,12 @@ const api={
     },
     search:{
         url:base.concat("/search"),
-        fetch:base.concat("")
+     
        
+    },
+    api:{
+        url:base.concat("key"),
+        generate:"/generate"
     }
 }
 

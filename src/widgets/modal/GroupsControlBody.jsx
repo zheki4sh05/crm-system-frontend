@@ -14,9 +14,19 @@ import MainBtn from "../../shared/MainBtn";
 import BasicPopover from "../../shared/MainPopover";
 import ModalWindow from "../../features/modal/ModalWindow";
 import GroupControlBody from "./GroupControlBody";
+import { useDispatch, useSelector } from "react-redux";
+import { getCompany } from "../../app/slices/companySlice";
+import { getToken } from "../../app/slices/appUserSlice";
+import { createGroup, getGroupsStatus } from "../../app/slices/groupsSlice";
 
 function GroupsControlBody({ list }) {
   const [alignment, setAlignment] = useState("B2C");
+  const token = useSelector(getToken)
+  const company = useSelector(getCompany)
+  const dispatch = useDispatch()
+
+
+
 
   const handleChange = (event) => {
     setAlignment(event.target.value);
@@ -25,22 +35,27 @@ function GroupsControlBody({ list }) {
 
   const handleEdit = (item) => {
 
-
-
     console.log(item)
-
-
-
 
   };
 
+
+
   const handleSave=(item)=>{
-
-
     let modify = {...item, type:alignment}
-
     console.log(modify)
-
+    dispatch(createGroup(
+      {
+        data:{
+          name:modify.name,
+          description:modify.description,
+          companyId:company.id,
+          customerType:alignment,
+          isActive:modify.isActive
+        },
+        token
+      }
+    ))
 
   }
 
@@ -48,7 +63,7 @@ function GroupsControlBody({ list }) {
     const filtered = [];
 
     for (let i = 0; i < list.length; i++) {
-      if (list[i].type === alignment) {
+      if (list[i].customerType === alignment) {
         filtered.push(list[i]);
       }
     }
