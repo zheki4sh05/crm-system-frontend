@@ -104,6 +104,14 @@ export const updateDeal = apiFactory.createPatchRequest(api.deal.update);
 export const fetchDeal = apiFactory.createGetRequest(api.deal.fetch);
 //----------------------
 
+// ----init api factory----
+const apiFactory2 = new ApiRequestCreator(DomainNames.order, api.order.url);
+//--------------------
+
+//--- create----
+export const createOrder = apiFactory2.createPostRequest(api.order.create);
+//----------------------
+
 const dealSlice = createSlice({
   name: DomainNames.deal,
   initialState,
@@ -171,8 +179,30 @@ const dealSlice = createSlice({
           .addCase(fetchDeal.rejected, (state, action) => {
             state.status = "failed";
             state.error = action.error.message;
-          });
+          })
         //----------------------------------------
+              //---создание заказа-------------
+              .addCase(createOrder.pending, (state, action) => {
+                state.status = "loading";
+              })
+              .addCase(createOrder.fulfilled, (state, action) => {
+                state.status = "succeeded";
+
+                state.deals.forEach(item=>{
+                  if(item.id == action.payload.dealId){
+                    item.orderList.push(action.payload)
+              
+                  }
+                })
+
+              
+                  
+              })
+              .addCase(createOrder.rejected, (state, action) => {
+                state.status = "failed";
+                state.error = action.error.message;
+              });
+            //----------------------------------------
   },
 });
 

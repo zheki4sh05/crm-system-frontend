@@ -58,7 +58,7 @@ function Deal({ type, deal, moveHandler, stages, workers, activeWorker }) {
   });
 
   const toggleDrawer = (anchor, open) => (event) => {
-   console.log("click")
+ 
     setState({ ...state, [anchor]: open });
     console.log(state)
   };

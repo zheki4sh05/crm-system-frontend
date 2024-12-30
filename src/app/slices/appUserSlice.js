@@ -10,7 +10,7 @@ const initialState = {
       email:"onlforward05@mail.ru",
       name:'name',
       lastname:"sdcisdlc",
-      token:"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvbmxmb3J3YXJkMDVAbWFpbC5ydSIsImlhdCI6MTczMzg2MDMzNiwiZXhwIjoxNzMzODY0NjU2fQ.L52fc21k2pDOtEGqcOcJcoJKqDIhyEl8cfqZVPCoIuo"
+      token:"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvbmxmb3J3YXJkMDVAbWFpbC5ydSIsImlhdCI6MTczNDA5NTk4MiwiZXhwIjoxNzM0MTAwMzAyfQ.lL9pWD1KBY7GjnRDq5Lyq9ta7-xM00R0kyOMvSw5G-M"
     },
     status:'idle',
     error:null

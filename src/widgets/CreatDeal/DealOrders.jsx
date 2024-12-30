@@ -6,10 +6,25 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import OrderFrom from "./OrderForm";
+import { useDispatch, useSelector } from "react-redux";
+import { createOrder } from "../../app/slices/dealSlice";
+import { getToken } from './../../app/slices/appUserSlice';
 function DealOrders({data,title,getDealTotalPrice}) {
+
+  const dispatch = useDispatch()
+  const token = useSelector(getToken)
 
   const handleOrderAdd=(newOrder)=>{
       console.log(newOrder)
+      dispatch(createOrder({
+        data:{
+          ...newOrder
+        },
+        token:token
+
+      }))
+
+
   }
 
   const BootstrapDialog = styled(Dialog)(({ theme }) => ({
@@ -58,7 +73,7 @@ function DealOrders({data,title,getDealTotalPrice}) {
         </IconButton>
         <DialogContent dividers>
 
-            <OrderFrom handleSave={handleOrderAdd}/>
+            <OrderFrom deal={data} handleSave={handleOrderAdd}/>
 
         </DialogContent>
         

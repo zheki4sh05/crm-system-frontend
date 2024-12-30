@@ -14,6 +14,7 @@ function OrderFrom({
     price: 0.0,
   },
   handleSave,
+  deal
 }) {
   const [name, setName] = useState(item.name);
   const [count, setCount] = useState(item.count);
@@ -58,7 +59,8 @@ function OrderFrom({
       name,
       count,
       price,
-      code
+      code,
+      dealId:deal.id
     });
   };
 

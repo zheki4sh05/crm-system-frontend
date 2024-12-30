@@ -48,12 +48,16 @@ const api={
     },
     search:{
         url:base.concat("/search"),
-     
+    
        
     },
     api:{
         url:base.concat("key"),
         generate:"/generate"
+    },
+    order:{
+        url:base.concat("order"),
+        create:"/create"
     }
 }
 

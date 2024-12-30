@@ -48,7 +48,7 @@ function Deals() {
   const dispatch = useDispatch();
   const groups = useSelector(getGroups);
   const [activeGroup, setActiveGroup] = useState(groups.length > 0 ? groups[0].id : 0);
-  console.log(groups)
+  
   const stages = useSelector(getStages);
   const deals = useSelector(getDeals);
   let groupsStatus = useSelector(getGroupsStatus);
@@ -89,7 +89,7 @@ function Deals() {
     setActiveGroup(groups.filter((item) => item.id === id)[0].id);
   };
 
-  console.log(activeGroup)
+
 
 
   return (
