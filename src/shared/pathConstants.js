@@ -7,8 +7,6 @@ export const PathConstants = {
     WORKERS:"/workers"
 
 }
-
-
 export function getPageNameByPath(path){
 
     switch(path){
